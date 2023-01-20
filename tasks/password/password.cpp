@@ -9,7 +9,7 @@ bool ValidatePassword(const std::string& password) {
 
     int cnt_special[5] = {0};
 
-    for (char t: password) {
+    for (char t : password) {
         int ascii_code = static_cast<int>(t);
 
         if (ascii_code < 33 or ascii_code > 126) {
