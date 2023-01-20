@@ -2,7 +2,7 @@
 
 bool IsPalindrome(const std::string& str) {
     std::string spaceless;
-    for (char t: str) {
+    for (char t : str) {
         if (t != ' ') {
             spaceless += t;
         }
