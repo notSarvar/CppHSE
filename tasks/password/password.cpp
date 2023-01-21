@@ -23,11 +23,9 @@ bool ValidatePassword(const std::string& password) {
 
         if (islower(ascii_code)) {
             cnt_special[0] = 1;
-        }
-        else if (isupper(ascii_code)) {
+        } else if (isupper(ascii_code)) {
             cnt_special[1] = 1;
-        }
-        else if (isdigit(ascii_code)) {
+        } else if (isdigit(ascii_code)) {
             cnt_special[2] = 1;
         } else {
             cnt_special[3] = 1;
