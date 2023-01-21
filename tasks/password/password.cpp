@@ -1,52 +1,38 @@
 #include "password.h"
 
-#define min_length 8
-#define max_length 14
-#define cnt_of_specials 4
-#define min_ascii 33
-#define max_ascii 126
-#define a_ascii 97
-#define z_ascii 122
-#define A_ascii 65
-#define Z_ascii 90
-#define zero_ascii 48
-#define nine_ascii 57
+constexpr size_t MIN_LENGTH = 8;
+constexpr size_t CLASSES_CNT = 4;
+constexpr size_t MAX_LENGTH = 14;
+constexpr size_t MIN_CODE_REQUIRED = 33;
+constexpr size_t MAX_CODE_REQUIRED = 126;
 
 bool ValidatePassword(const std::string& password) {
-    bool ans_flag = true;
 
-    if (password.size() < min_length or password.size() > max_length) {
-        ans_flag = false;
+    if (password.size() < MIN_LENGTH || password.size() > MAX_LENGTH) {
+        return false;
     }
 
-    int cnt_special[cnt_of_specials] = {0};
+    int cnt_special[CLASSES_CNT] = {0};
 
     for (char t : password) {
         int ascii_code = static_cast<int>(t);
 
-        if (ascii_code < min_ascii or ascii_code > max_ascii) {
-            ans_flag = false;
-            break;
+        if (ascii_code < MIN_CODE_REQUIRED || ascii_code > MAX_CODE_REQUIRED) {
+            return false;
         }
 
-        switch (ascii_code) {
-            case a_ascii ... z_ascii:
-                cnt_special[0] = 1;
-                break;
-            case A_ascii ... Z_ascii:
-                cnt_special[1] = 1;
-                break;
-            case zero_ascii ... nine_ascii:
-                cnt_special[2] = 1;
-                break;
-            default:
-                cnt_special[3] = 1;
+        if (islower(ascii_code)) {
+            cnt_special[0] = 1;
+        }
+        else if (isupper(ascii_code)) {
+            cnt_special[1] = 1;
+        }
+        else if (isdigit(ascii_code)) {
+            cnt_special[2] = 1;
+        } else {
+            cnt_special[3] = 1;
         }
     }
 
-    if (std::count(cnt_special, cnt_special + 4, 1) < 3) {
-        ans_flag = false;
-    }
-
-    return ans_flag;
+    return std::count(cnt_special, cnt_special + 4, 1) > 2;
 }
