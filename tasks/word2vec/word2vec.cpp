@@ -18,7 +18,7 @@ std::vector<std::string> FindClosestWords(const std::vector<std::string>& words,
         max_dist = std::max(max_dist, sum);
     }
     std::vector<std::string> closest_words;
-    for (const auto& i: words) {
+    for (const auto& i : words) {
         if (how_close[i] == max_dist) {
             closest_words.push_back(i);
         }
@@ -26,4 +26,4 @@ std::vector<std::string> FindClosestWords(const std::vector<std::string>& words,
 
     return closest_words;
 }
-//Ya znayu eto ne proidet
+// Ya znayu eto ne proidet
