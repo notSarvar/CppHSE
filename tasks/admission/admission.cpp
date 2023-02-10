@@ -6,8 +6,9 @@ bool ApplicantComp(const Applicant* a, const Applicant* b) {
     if (a->points > b->points) {
         return true;
     } else if (a->points == b->points) {
-        return std::tie(a->student.birth_date.year, a->student.birth_date.month, a->student.birth_date.day, a->student.name) <
-               std::tie(b->student.birth_date.year, b->student.birth_date.month, b->student.birth_date.day, b->student.name);
+        return std::tie(a->student.birth_date.year, a->student.birth_date.month, a->student.birth_date.day,
+                        a->student.name) < std::tie(b->student.birth_date.year, b->student.birth_date.month,
+                                                    b->student.birth_date.day, b->student.name);
     }
     return false;
 }
