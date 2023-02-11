@@ -9,7 +9,7 @@ bool ByTime(const Event* a, const Event* b) {
 ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
     std::vector<const Event*> sorted_events;
     for (const auto& i : events) {
-        sorted_events.push_back(&i);// добавить сюда std::move?
+        sorted_events.push_back(&i);  // добавить сюда std::move?
     }
     std::sort(sorted_events.begin(), sorted_events.end(), ByTime);
 
@@ -35,7 +35,7 @@ ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
     for (const auto& i : all_events) {
         for (const auto& j : i.second) {
             if (j.second == std::make_pair(1, 1)) {
-                score_table[i.first].insert(j.first); // тут возникала ошибка с i.first когда поменял StudentName
+                score_table[i.first].insert(j.first);  // тут возникала ошибка с i.first когда поменял StudentName
             }
         }
     }
