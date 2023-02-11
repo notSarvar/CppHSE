@@ -29,14 +29,15 @@ std::string NormalizePath(std::string_view current_working_dir, std::string_view
             if (cur_dir == "/") {
                 continue;
             }
-            size_t last_slash = cur_dir.rfind('/', cur_dir.size() - 1);
+            size_t last_slash = cur_dir.rfind('/', cur_dir.size() - 2);
+            //            std::cout<<last_slash <<"\n";
             cur_dir = cur_dir.substr(0, last_slash + 1);
         } else {
             prev_slash = static_cast<int64_t>(i);
             cur_dir += cur_move;
             cur_dir += "/";
         }
-        // std::cout << i << "\n";
+        //         std::cout << cur_dir << "\n";
     }
     if (cur_dir[cur_dir.size() - 1] == '/' && cur_dir.size() > 1) {
         cur_dir.erase(cur_dir.size() - 1);
