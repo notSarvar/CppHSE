@@ -18,7 +18,9 @@ ScoreTable GetScoredStudents(const Events& events, time_t score_time) {
         if (i->time > score_time) {
             break;
         }
-        all_events[i->student_name][i->task_name] = {0, 1};
+        if (!all_events.contains(i->student_name) || !all_events[i->student_name].contains(i->task_name)) {
+            all_events[i->student_name][i->task_name] = {0, 1};
+        }
         if (i->event_type == EventType::CheckSuccess) {
             all_events[i->student_name][i->task_name] = {1, all_events[i->student_name][i->task_name].second};
         } else if (i->event_type == EventType::CheckFailed) {
