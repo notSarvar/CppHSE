@@ -34,6 +34,9 @@ std::string NormalizePath(std::string_view current_working_dir, std::string_view
             cur_dir = cur_dir.substr(0, last_slash + 1);
         } else {
             prev_slash = static_cast<int64_t>(i);
+            if (cur_dir[cur_dir.size() - 1] != '/') {
+                cur_dir += '/';
+            }
             cur_dir += cur_move;
             cur_dir += "/";
         }
