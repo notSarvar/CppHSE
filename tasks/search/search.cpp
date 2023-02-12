@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include <cmath>
 
-//#include <iostream>
+// #include <iostream>
 
 bool Comp(const std::pair<double, std::string_view>& a, const std::pair<double, std::string_view>& b) {
     return (a.first - b.first > 0);
@@ -113,9 +113,9 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     }
 
     std::sort(sorted_lines.begin(), sorted_lines.end(), Comp);
-//    for (const auto& i : sorted_lines) {
-//        std::cout << i.second << "\n";
-//    }
+    //    for (const auto& i : sorted_lines) {
+    //        std::cout << i.second << "\n";
+    //    }
 
     std::vector<std::string_view> search_result;
     for (const auto& i : sorted_lines) {
@@ -123,7 +123,6 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             break;
         }
         search_result.push_back(i.second);
-
     }
     return search_result;
 }
