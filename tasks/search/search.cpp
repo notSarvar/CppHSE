@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include <ctype.h>
+#include <cmath>
 
 const auto& cmp = [](const std::string_view& a, const std::string_view& b) {
     if (a.size() == b.size()) {
