@@ -1,7 +1,5 @@
 #include "unixpath.h"
 
-#include <iostream>
-
 std::string NormalizePath(std::string_view current_working_dir, std::string_view path) {
 
     if (path.empty()) {
