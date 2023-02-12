@@ -40,14 +40,12 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         }
         if (prev_space == 0 && isalpha(query[0]) && !query.substr(0, i).empty()) {
             unique_words.insert(query.substr(0, i));
-        } else if (!query.substr(prev_space + 1, i - prev_space - 1).empty()){
+        } else if (!query.substr(prev_space + 1, i - prev_space - 1).empty()) {
             unique_words.insert(query.substr(prev_space + 1, i - prev_space - 1));
-
         }
 
         prev_space = i;
     }
-
 
     size_t new_line = 0;
     std::string_view line;
