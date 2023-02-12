@@ -103,7 +103,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     std::sort(sorted_lines.begin(), sorted_lines.end());
 
     std::vector<std::string_view> search_result;
-    for (size_t i = sorted_lines.size() - 1; i > 0 && results_count> 0; --results_count, --i) {
+    for (size_t i = sorted_lines.size() - 1; i > 0 && results_count > 0; --results_count, --i) {
         search_result.push_back(sorted_lines[i].second);
     }
     return search_result;
