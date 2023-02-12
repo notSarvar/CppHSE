@@ -6,10 +6,10 @@
 #include <ctype.h>
 #include <cmath>
 
-// #include <iostream>
+//#include <iostream>
 
 bool Comp(const std::pair<double, std::string_view>& a, const std::pair<double, std::string_view>& b) {
-    return a.first > b.first;
+    return (a.first - b.first > 0);
 }
 
 const auto& cmp = [](const std::string_view& a, const std::string_view& b) {
@@ -107,22 +107,23 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         for (const auto& j : tfs[i]) {
             relevance += (j.second * idfs[j.first]);
         }
-        sorted_lines.push_back({relevance, i});
+        if (relevance > 0) {
+            sorted_lines.push_back({relevance, i});
+        }
     }
 
     std::sort(sorted_lines.begin(), sorted_lines.end(), Comp);
-    //    for (const auto& i : sorted_lines) {
-    //        std::cout << i.second << "\n";
-    //    }
+//    for (const auto& i : sorted_lines) {
+//        std::cout << i.second << "\n";
+//    }
 
     std::vector<std::string_view> search_result;
     for (const auto& i : sorted_lines) {
         if (results_count-- == 0) {
             break;
         }
-        if (i.first > 0) {
-            search_result.push_back(i.second);
-        }
+        search_result.push_back(i.second);
+
     }
     return search_result;
 }
