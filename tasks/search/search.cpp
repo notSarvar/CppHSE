@@ -34,17 +34,21 @@ bool operator==(const std::string_view& a, const std::string_view& b) {
 std::vector<std::string_view> Search(std::string_view text, std::string_view query, size_t results_count) {
     std::set<std::string_view, decltype(cmp)> unique_words(cmp);
     size_t prev_space = 0;
-    for (size_t i = 0; i < query.size(); ++i) {
+    for (size_t i = 1; i < query.size(); ++i) {
         while (isalpha(query[i]) && i < query.size()) {
             ++i;
         }
-        if (prev_space == 0 && query[0] != ' ') {
+        if (prev_space == 0 && isalpha(query[0]) && !query.substr(0, i).empty()) {
             unique_words.insert(query.substr(0, i));
-        } else {
+        } else if (!query.substr(prev_space + 1, i - prev_space - 1).empty()){
             unique_words.insert(query.substr(prev_space + 1, i - prev_space - 1));
+
         }
+
         prev_space = i;
     }
+
+
     size_t new_line = 0;
     std::string_view line;
     std::unordered_map<std::string_view, std::pair<std::string_view, size_t>> occur_count;
@@ -58,11 +62,11 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         size_t prev_space1 = 0;
         std::string_view word;
         cur_text.push_back(line);
-        for (size_t i = 0; i < line.size(); ++i) {
+        for (size_t i = 1; i < line.size(); ++i) {
             while (isalpha(line[i]) && i < line.size()) {
                 ++i;
             }
-            if (prev_space1 == 0 && !isalpha(line[0])) {
+            if (prev_space1 == 0 && isalpha(line[0])) {
                 word = line.substr(0, i);
             } else {
                 word = line.substr(prev_space1 + 1, i - prev_space1 - 1);
