@@ -24,9 +24,10 @@ TEST_CASE("Search") {
         "the release of Letraset sheets containing Lorem\n"
         "psum passages, and more recently with desktop\n"
         "publishing software like Aldus PageMaker\n"
+        "including versions of Lorem Ipsum.\n"
         "including versions of Lorem Ipsum.";
 
-    std::string_view query = "typesetting release";
+    std::string_view query = "Typesetting typesetting release";
     std::vector<std::string_view> expected = {"electronic typesetting, remaining essentially"};
 
     const auto& actual = Search(text, query, 1);

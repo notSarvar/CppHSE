@@ -6,6 +6,12 @@
 #include <ctype.h>
 #include <cmath>
 
+// #include <iostream>
+
+bool Comp(const std::pair<double, std::string_view>& a, const std::pair<double, std::string_view>& b) {
+    return a.first > b.first;
+}
+
 const auto& cmp = [](const std::string_view& a, const std::string_view& b) {
     if (a.size() == b.size()) {
         for (size_t i = 0; i < a.size(); ++i) {
@@ -66,7 +72,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             }
             if (prev_space1 == 0 && isalpha(line[0])) {
                 word = line.substr(0, i);
-            } else if (prev_space1 != i) {
+            } else {
                 word = line.substr(prev_space1 + 1, i - prev_space1 - 1);
             }
             prev_space1 = i;
@@ -103,12 +109,19 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         }
         sorted_lines.push_back({relevance, i});
     }
-    std::sort(sorted_lines.begin(), sorted_lines.end());
+
+    std::sort(sorted_lines.begin(), sorted_lines.end(), Comp);
+    //    for (const auto& i : sorted_lines) {
+    //        std::cout << i.second << "\n";
+    //    }
 
     std::vector<std::string_view> search_result;
-    for (size_t i = sorted_lines.size() - 1; i > 0 && results_count > 0; --results_count, --i) {
-        if (sorted_lines[i].first > 0) {
-            search_result.push_back(sorted_lines[i].second);
+    for (const auto& i : sorted_lines) {
+        if (results_count-- == 0) {
+            break;
+        }
+        if (i.first > 0) {
+            search_result.push_back(i.second);
         }
     }
     return search_result;
