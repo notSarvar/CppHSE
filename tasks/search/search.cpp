@@ -8,14 +8,13 @@
 const auto& cmp = [](const std::string_view& a, const std::string_view& b) {
     if (a.size() == b.size()) {
         for (size_t i = 0; i < a.size(); ++i) {
-            if (tolower(a[i]) != tolower(b[i])) {
-                return false;
+            if (a[i] == b[i]) {
+                continue;
             }
+            return tolower(a[i]) < tolower(b[i]);
         }
-    } else {
-        return false;
     }
-    return true;
+    return a.size() < b.size();
 };
 
 bool operator==(const std::string_view& a, const std::string_view& b) {
@@ -90,7 +89,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
                 ++occur_in_docs_cnt;
             }
         }
-        idfs[i] = static_cast<double>(line_words_cnt.size()) / static_cast<double>(occur_in_docs_cnt);
+        idfs[i] = log(static_cast<double>(line_words_cnt.size()) / static_cast<double>(occur_in_docs_cnt));
     }
     double relevance = 0;
     std::vector<std::pair<double, std::string_view>> sorted_lines;
