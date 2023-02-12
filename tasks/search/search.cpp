@@ -5,21 +5,20 @@
 #include <vector>
 #include <ctype.h>
 #include <cmath>
+#include <algorithm>
 
-// #include <iostream>
+ #include <iostream>
 
 bool Comp(const std::pair<double, std::string_view>& a, const std::pair<double, std::string_view>& b) {
     return (a.first - b.first > 0);
 }
 
 const auto& cmp = [](const std::string_view& a, const std::string_view& b) {
-    if (a.size() == b.size()) {
-        for (size_t i = 0; i < a.size(); ++i) {
-            if (a[i] == b[i]) {
-                continue;
-            }
-            return tolower(a[i]) < tolower(b[i]);
+    for (size_t i = 0; i < std::min(a.size(), b.size()); ++i) {
+        if (a[i] == b[i]) {
+            continue;
         }
+        return tolower(a[i]) < tolower(b[i]);
     }
     return a.size() < b.size();
 };
@@ -113,9 +112,9 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     }
 
     std::sort(sorted_lines.begin(), sorted_lines.end(), Comp);
-    //    for (const auto& i : sorted_lines) {
-    //        std::cout << i.second << "\n";
-    //    }
+//        for (const auto& i : sorted_lines) {
+//            std::cout << i.second << "\n";
+//        }
 
     std::vector<std::string_view> search_result;
     for (const auto& i : sorted_lines) {

@@ -21,6 +21,7 @@ TEST_CASE("Search") {
         "not only five centuries, but also the leap into\n"
         "electronic typesetting, remaining essentially\n"
         "unchanged. It was popularised in the 1960s with\n"
+        "\n"
         "the release of Letraset sheets containing Lorem\n"
         "psum passages, and more recently with desktop\n"
         "publishing software like Aldus PageMaker\n"
