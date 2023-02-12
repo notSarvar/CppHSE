@@ -24,7 +24,6 @@ TEST_CASE("Search") {
         "the release of Letraset sheets containing Lorem\n"
         "psum passages, and more recently with desktop\n"
         "publishing software like Aldus PageMaker\n"
-        "including versions of Lorem Ipsum.\n"
         "including versions of Lorem Ipsum.";
 
     std::string_view query = "Typesetting typesetting release";
