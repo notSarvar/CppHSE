@@ -66,7 +66,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             }
             if (prev_space1 == 0 && isalpha(line[0])) {
                 word = line.substr(0, i);
-            } else {
+            } else if (prev_space1 != i) {
                 word = line.substr(prev_space1 + 1, i - prev_space1 - 1);
             }
             prev_space1 = i;
