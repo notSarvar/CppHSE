@@ -62,7 +62,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             while (isalpha(line[i]) && i < line.size()) {
                 ++i;
             }
-            if (prev_space1 == 0 && line[0] != ' ') {
+            if (prev_space1 == 0 && !isalpha(line[0])) {
                 word = line.substr(0, i);
             } else {
                 word = line.substr(prev_space1 + 1, i - prev_space1 - 1);
@@ -90,7 +90,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
                 ++occur_in_docs_cnt;
             }
         }
-        idfs[i] = log(static_cast<double>(line_words_cnt.size()) / static_cast<double>(occur_in_docs_cnt));
+        idfs[i] = std::log(static_cast<double>(line_words_cnt.size()) / static_cast<double>(occur_in_docs_cnt));
     }
     double relevance = 0;
     std::vector<std::pair<double, std::string_view>> sorted_lines;
