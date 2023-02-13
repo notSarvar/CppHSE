@@ -95,19 +95,19 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
                 ++occurs;
             }
         }
-        idfs[i] = log(static_cast<double >(cur_text.size()) / static_cast<double>(occurs));
+        idfs[i] = log(static_cast<double>(cur_text.size()) / static_cast<double>(occurs));
     }
 
     std::vector<std::pair<double, size_t>> relevance(cur_text.size());
     for (size_t i = 0; i < occur_cnt.size(); ++i) {
         relevance[i] = {0, i};
         for (const auto& j : occur_cnt[i]) {
-            relevance[i].first += (static_cast<double>(j.second) / static_cast<double>(cur_text[i].size())) * idfs[j.first];
+            relevance[i].first +=
+                (static_cast<double>(j.second) / static_cast<double>(cur_text[i].size())) * idfs[j.first];
         }
     }
 
     std::stable_sort(relevance.begin(), relevance.end(), Comp);
-
 
     std::vector<std::string_view> search_result;
     for (const auto& i : relevance) {
