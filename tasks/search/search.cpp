@@ -7,6 +7,8 @@
 #include <cmath>
 #include <algorithm>
 
+#include <iostream>
+
 bool Comp(const std::pair<double, std::size_t>& a, const std::pair<double, std::size_t>& b) {
     return (a.first - b.first > 0);
 }
@@ -114,7 +116,9 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         if (results_count-- == 0) {
             break;
         }
-        search_result.push_back(text_by_lines[i.second]);
+        if (i.first > 0) {
+            search_result.push_back(text_by_lines[i.second]);
+        }
     }
     return search_result;
 }
