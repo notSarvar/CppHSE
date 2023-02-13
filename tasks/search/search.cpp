@@ -7,9 +7,7 @@
 #include <cmath>
 #include <algorithm>
 
- #include <iostream>
-
-bool Comp(const std::pair<double, std::string_view>& a, const std::pair<double, std::string_view>& b) {
+bool Comp(const std::pair<double, std::size_t>& a, const std::pair<double, std::size_t>& b) {
     return (a.first - b.first > 0);
 }
 
@@ -38,90 +36,85 @@ bool operator==(const std::string_view& a, const std::string_view& b) {
 
 std::vector<std::string_view> Search(std::string_view text, std::string_view query, size_t results_count) {
     std::set<std::string_view, decltype(cmp)> unique_words(cmp);
-    size_t prev_space = 0;
+    size_t isnt_alpha = 0;
     for (size_t i = 1; i < query.size(); ++i) {
         while (isalpha(query[i]) && i < query.size()) {
             ++i;
         }
-        if (prev_space == 0 && isalpha(query[0]) && !query.substr(0, i).empty()) {
+        if (isnt_alpha == 0 && isalpha(query[0]) && !query.substr(0, i).empty()) {
             unique_words.insert(query.substr(0, i));
-        } else if (!query.substr(prev_space + 1, i - prev_space - 1).empty()) {
-            unique_words.insert(query.substr(prev_space + 1, i - prev_space - 1));
+        } else if (!query.substr(isnt_alpha + 1, i - isnt_alpha - 1).empty()) {
+            unique_words.insert(query.substr(isnt_alpha + 1, i - isnt_alpha - 1));
         }
-
-        prev_space = i;
+        isnt_alpha = i;
     }
 
     size_t new_line = 0;
     std::string_view line;
-    std::unordered_map<std::string_view, std::pair<std::string_view, size_t>> occur_count;
-    std::unordered_map<std::string_view, size_t> line_words_cnt;
-    std::vector<std::string_view> cur_text;
+    std::vector<std::vector<std::string_view>> cur_text;
+    std::vector<std::string_view> text_by_lines;
     do {
         new_line = text.find('\n');
         line = text.substr(0, new_line);
+        text_by_lines.push_back(line);
         text.remove_prefix(new_line + 1);
-        line_words_cnt[line] = 0;
-        size_t prev_space1 = 0;
+        isnt_alpha = 0;
         std::string_view word;
-        cur_text.push_back(line);
+        std::vector<std::string_view> cur_line;
         for (size_t i = 1; i < line.size(); ++i) {
             while (isalpha(line[i]) && i < line.size()) {
                 ++i;
             }
-            if (prev_space1 == 0 && isalpha(line[0])) {
+            if (isnt_alpha == 0 && isalpha(line[0])) {
                 word = line.substr(0, i);
             } else {
-                word = line.substr(prev_space1 + 1, i - prev_space1 - 1);
+                word = line.substr(isnt_alpha + 1, i - isnt_alpha - 1);
             }
-            prev_space1 = i;
-
-            for (const auto& w : unique_words) {
-                if (w == word) {
-                    occur_count[line].first = w;
-                    ++occur_count[line].second;
-                }
-            }
-            ++line_words_cnt[line];
+            isnt_alpha = i;
+            cur_line.push_back(word);
         }
+        cur_text.push_back(cur_line);
     } while (new_line < text.size());
 
-    std::unordered_map<std::string_view, double> idfs;
-    std::unordered_map<std::string_view, std::vector<std::pair<std::string_view, double>>> tfs;
-    for (const auto& i : unique_words) {
-        size_t occur_in_docs_cnt = 0;
-        for (const auto& j : occur_count) {
-            if (j.second.first == i) {
-                tfs[j.first].push_back(
-                    {i, static_cast<double>(j.second.second) / static_cast<double>(line_words_cnt[j.first])});
-                ++occur_in_docs_cnt;
+    std::vector<std::unordered_map<std::string_view, size_t>> occur_cnt(cur_text.size());
+    for (size_t i = 0; i < cur_text.size(); ++i) {
+        for (const auto& j : unique_words) {
+            for (size_t k = 0; k < cur_text[i].size(); ++k) {
+                if (cur_text[i][k] == j) {
+                    ++occur_cnt[i][j];
+                }
             }
         }
-        idfs[i] = std::log(static_cast<double>(line_words_cnt.size()) / static_cast<double>(occur_in_docs_cnt));
     }
-    double relevance = 0;
-    std::vector<std::pair<double, std::string_view>> sorted_lines;
-    for (const auto& i : cur_text) {
-        relevance = 0;
-        for (const auto& j : tfs[i]) {
-            relevance += (j.second * idfs[j.first]);
+
+    std::unordered_map<std::string_view, double> idfs;
+    for (const auto& i : unique_words) {
+        size_t occurs = 0;
+        for (size_t j = 0; j < occur_cnt.size(); ++j) {
+            if (occur_cnt[j].count(i)) {
+                ++occurs;
+            }
         }
-        if (relevance > 0) {
-            sorted_lines.push_back({relevance, i});
+        idfs[i] = log(static_cast<double >(cur_text.size()) / static_cast<double>(occurs));
+    }
+
+    std::vector<std::pair<double, size_t>> relevance(cur_text.size());
+    for (size_t i = 0; i < occur_cnt.size(); ++i) {
+        relevance[i] = {0, i};
+        for (const auto& j : occur_cnt[i]) {
+            relevance[i].first += (static_cast<double>(j.second) / static_cast<double>(cur_text[i].size())) * idfs[j.first];
         }
     }
 
-    std::sort(sorted_lines.begin(), sorted_lines.end(), Comp);
-//        for (const auto& i : sorted_lines) {
-//            std::cout << i.second << "\n";
-//        }
+    std::stable_sort(relevance.begin(), relevance.end(), Comp);
+
 
     std::vector<std::string_view> search_result;
-    for (const auto& i : sorted_lines) {
+    for (const auto& i : relevance) {
         if (results_count-- == 0) {
             break;
         }
-        search_result.push_back(i.second);
+        search_result.push_back(text_by_lines[i.second]);
     }
     return search_result;
 }
