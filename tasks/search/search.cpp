@@ -7,11 +7,6 @@
 #include <cmath>
 #include <algorithm>
 
-struct LineRelevance {
-    double relevance;
-    std::string_view line;
-};
-
 bool Comp(const std::pair<double, std::size_t>& a, const std::pair<double, std::size_t>& b) {
     return (a.first - b.first > 0);
 }
@@ -47,9 +42,9 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             ++i;
         }
         if (isnt_alpha == 0 && isalpha(query[0]) && !query.substr(0, i).empty()) {
-            unique_words.insert(query.substr(0, i));
+            unique_words.insert(std::string_view{query.data(), i});
         } else if (!query.substr(isnt_alpha + 1, i - isnt_alpha - 1).empty()) {
-            unique_words.insert(query.substr(isnt_alpha + 1, i - isnt_alpha - 1));
+            unique_words.insert(std::string_view{query.data() + isnt_alpha + 1, i - isnt_alpha - 1});
         }
         isnt_alpha = i;
     }
@@ -71,9 +66,9 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
                 ++i;
             }
             if (isnt_alpha == 0 && isalpha(line[0])) {
-                word = line.substr(0, i);
+                word = std::string_view{line.data(), i};
             } else {
-                word = line.substr(isnt_alpha + 1, i - isnt_alpha - 1);
+                word = std::string_view{line.data() + isnt_alpha + 1, i - isnt_alpha - 1};
             }
             isnt_alpha = i;
             cur_line.push_back(word);
