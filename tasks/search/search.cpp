@@ -72,7 +72,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             }
             if (isnt_alpha == 0 && isalpha(line[0])) {
                 word = std::string_view{line.data(), i};
-            } else {
+            } else if (!std::string_view{line.data() + isnt_alpha + 1, i - isnt_alpha - 1}.empty()){
                 word = std::string_view{line.data() + isnt_alpha + 1, i - isnt_alpha - 1};
             }
             isnt_alpha = i;
