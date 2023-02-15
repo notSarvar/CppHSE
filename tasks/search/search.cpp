@@ -7,9 +7,9 @@
 #include <cmath>
 #include <algorithm>
 
-const double EPS = 1e-7;
+const long double EPS = 1e-7;
 
-bool ByRelevance(const std::pair<double, std::size_t>& a, const std::pair<double, std::size_t>& b) {
+bool ByRelevance(const std::pair<long double, std::size_t>& a, const std::pair<long double, std::size_t>& b) {
     if ((a.first - b.first) < EPS) {
         return false;
     }
@@ -92,7 +92,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         }
     }
 
-    std::unordered_map<std::string_view, double> idfs;
+    std::unordered_map<std::string_view, long double> idfs;
     for (const auto& i : unique_words) {
         size_t occurs = 0;
         for (size_t j = 0; j < occur_cnt.size(); ++j) {
@@ -100,15 +100,15 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
                 ++occurs;
             }
         }
-        idfs[i] = log(static_cast<double>(cur_text.size()) / static_cast<double>(occurs));
+        idfs[i] = log(static_cast<long double>(cur_text.size()) / static_cast<long double>(occurs));
     }
 
-    std::vector<std::pair<double, size_t>> relevance(cur_text.size());
+    std::vector<std::pair<long double, size_t>> relevance(cur_text.size());
     for (size_t i = 0; i < occur_cnt.size(); ++i) {
         relevance[i] = {0, i};
         for (const auto& j : occur_cnt[i]) {
             relevance[i].first +=
-                (static_cast<double>(j.second) / static_cast<double>(cur_text[i].size())) * idfs[j.first];
+                (static_cast<long double>(j.second) / static_cast<long double>(cur_text[i].size())) * idfs[j.first];
         }
     }
 
