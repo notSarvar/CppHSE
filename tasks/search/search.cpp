@@ -43,7 +43,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         }
         if (isnt_alpha == 0 && isalpha(query[0]) && !query.substr(0, i).empty()) {
             unique_words.insert(std::string_view{query.data(), i});
-        } else if (!query.substr(isnt_alpha + 1, i - isnt_alpha - 1).empty()) {
+        } else if (!std::string_view{query.data() + isnt_alpha + 1, i - isnt_alpha - 1}.empty()) {
             unique_words.insert(std::string_view{query.data() + isnt_alpha + 1, i - isnt_alpha - 1});
         }
         isnt_alpha = i;
