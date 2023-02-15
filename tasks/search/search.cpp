@@ -18,7 +18,7 @@ bool ByRelevance(const std::pair<long double, std::size_t>& a, const std::pair<l
 
 const auto& cmp = [](const std::string_view& a, const std::string_view& b) {
     for (size_t i = 0; i < std::min(a.size(), b.size()); ++i) {
-        if (a[i] == b[i]) {
+        if (tolower(a[i]) == tolower(b[i])) {
             continue;
         }
         return tolower(a[i]) < tolower(b[i]);
