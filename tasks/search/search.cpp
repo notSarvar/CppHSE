@@ -7,8 +7,6 @@
 #include <cmath>
 #include <algorithm>
 
-#include <iostream>
-
 struct LineRelevance {
     double relevance;
     std::string_view line;
@@ -54,10 +52,6 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             unique_words.insert(query.substr(isnt_alpha + 1, i - isnt_alpha - 1));
         }
         isnt_alpha = i;
-    }
-
-    for (const auto& i : unique_words) {
-        std::cout << i << "\n";
     }
 
     size_t new_line = 0;
