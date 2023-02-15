@@ -100,7 +100,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
                 ++occurs;
             }
         }
-        idfs[i] = log(static_cast<long double>(cur_text.size()) / static_cast<long double>(occurs));
+        idfs[i] = std::logl(static_cast<long double>(cur_text.size()) / static_cast<long double>(occurs));
     }
 
     std::vector<std::pair<long double, size_t>> relevance(cur_text.size());
