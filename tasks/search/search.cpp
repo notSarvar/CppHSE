@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <cmath>
 #include <algorithm>
+#include <string>
 
 const long double EPS = 1e-7;
 
@@ -60,9 +61,11 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
     std::vector<std::string_view> text_by_lines;
     do {
         new_line = text.find('\n');
+        if (new_line == std::string::npos) {
+            new_line = text.size();
+        }
         line = text.substr(0, new_line);
         text_by_lines.push_back(line);
-        text.remove_prefix(new_line + 1);
         isnt_alpha = 0;
         std::string_view word;
         std::vector<std::string_view> cur_line;
@@ -79,7 +82,11 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
             cur_line.push_back(word);
         }
         cur_text.push_back(cur_line);
-    } while (new_line < text.size());
+        if (new_line == text.size()) {
+            break;
+        }
+        text.remove_prefix(new_line + 1);
+    } while (!text.empty());
 
     std::vector<std::unordered_map<std::string_view, size_t>> occur_cnt(cur_text.size());
     for (size_t i = 0; i < cur_text.size(); ++i) {
