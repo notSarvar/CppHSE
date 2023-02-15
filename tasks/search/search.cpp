@@ -7,8 +7,8 @@
 #include <cmath>
 #include <algorithm>
 
-bool Comp(const std::pair<double, std::size_t>& a, const std::pair<double, std::size_t>& b) {
-    return (a.first - b.first > 0);
+bool ByRelevance(const std::pair<double, std::size_t>& a, const std::pair<double, std::size_t>& b) {
+    return a.first > b.first;
 }
 
 const auto& cmp = [](const std::string_view& a, const std::string_view& b) {
@@ -107,7 +107,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         }
     }
 
-    std::stable_sort(relevance.begin(), relevance.end(), Comp);
+    std::stable_sort(relevance.begin(), relevance.end(), ByRelevance);
 
     std::vector<std::string_view> search_result;
     for (const auto& i : relevance) {
