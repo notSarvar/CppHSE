@@ -7,8 +7,13 @@
 #include <cmath>
 #include <algorithm>
 
+const double EPS = 1e-7;
+
 bool ByRelevance(const std::pair<double, std::size_t>& a, const std::pair<double, std::size_t>& b) {
-    return a.first > b.first;
+    if ((a.first - b.first) < EPS) {
+        return false;
+    }
+    return true;
 }
 
 const auto& cmp = [](const std::string_view& a, const std::string_view& b) {
