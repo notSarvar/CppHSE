@@ -119,7 +119,7 @@ std::vector<std::string_view> Search(std::string_view text, std::string_view que
         if (results_count-- == 0) {
             break;
         }
-        if (i.first > 0) {
+        if (i.first > EPS) {
             search_result.push_back(text_by_lines[i.second]);
         }
     }
