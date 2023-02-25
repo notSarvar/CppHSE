@@ -26,6 +26,7 @@ public:
     void Reset();
 
     ScoreTable GetScoreTable() const;
+
 private:
     ScoreTable actual_scores_;
     std::unordered_map<StudentName, TaskStatus> all_actions_;
