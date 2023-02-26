@@ -11,4 +11,7 @@ public:
 
     std::string GetAbsolutePath() const;
     std::string GetRelativePath() const;
+private:
+    std::string cur_dir_;
+    std::string changed_string_;
 };
