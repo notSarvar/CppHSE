@@ -70,19 +70,17 @@ void UnixPath::ChangeDirectory(std::string_view path) {
     if (relative_path_.empty()) {
         relative_path_ += "./";
     }
-//    std::cout << "relative = " << relative_path_ << "\n";
-//    std::cout<<"absolut = " << absolute_path_.substr(last_common_dir + 1) <<"\n";
+    //    std::cout << "relative = " << relative_path_ << "\n";
+    //    std::cout<<"absolut = " << absolute_path_.substr(last_common_dir + 1) <<"\n";
 
     relative_path_ += absolute_path_.substr(last_common_dir + 1);
-//    std::cout << "relative1 = " << relative_path_ << "\n";
+    //    std::cout << "relative1 = " << relative_path_ << "\n";
 
     if (relative_path_.size() > 1 && relative_path_.back() == '/') {
         relative_path_.pop_back();
     }
     initial_dir_.pop_back();
     absolute_path_.pop_back();
-
-
 }
 
 std::string UnixPath::GetAbsolutePath() const {
