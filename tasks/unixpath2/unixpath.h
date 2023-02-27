@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <string_view>
 
@@ -11,4 +12,9 @@ public:
 
     std::string GetAbsolutePath() const;
     std::string GetRelativePath() const;
+private:
+    std::string initial_dir_;
+    std::string cur_dir_;
+    std::string absolute_path_;
+    std::string relative_path_;
 };
