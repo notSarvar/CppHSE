@@ -1,7 +1,5 @@
 #include "unixpath.h"
 
-#include <iostream>
-
 UnixPath::UnixPath(std::string_view initial_dir) : initial_dir_(initial_dir) {
     absolute_path_ = initial_dir_;
 }
