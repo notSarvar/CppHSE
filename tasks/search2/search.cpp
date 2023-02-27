@@ -33,7 +33,37 @@ bool operator==(const std::string_view& a, const std::string_view& b) {
 }
 
 void SearchEngine::BuildIndex(std::string_view text) {
-    this->text_ = text;
+    size_t isnt_alpha = 0;
+    size_t new_line = 0;
+    std::string_view line;
+    do {
+        new_line = text.find('\n');
+        if (new_line == std::string::npos) {
+            new_line = text.size();
+        }
+        line = text.substr(0, new_line);
+        text_by_lines.push_back(line);
+        isnt_alpha = 0;
+        std::string_view word;
+        std::vector<std::string_view> cur_line;
+        for (size_t i = 1; i < line.size(); ++i) {
+            while (isalpha(line[i]) && i < line.size()) {
+                ++i;
+            }
+            if (isnt_alpha == 0 && isalpha(line[0])) {
+                word = std::string_view{line.data(), i};
+            } else if (!std::string_view{line.data() + isnt_alpha + 1, i - isnt_alpha - 1}.empty()) {
+                word = std::string_view{line.data() + isnt_alpha + 1, i - isnt_alpha - 1};
+            }
+            isnt_alpha = i;
+            cur_line.push_back(word);
+        }
+        text_by_words_.push_back(cur_line);
+        if (new_line == text.size()) {
+            break;
+        }
+        text.remove_prefix(new_line + 1);
+    } while (!text.empty());
 }
 
 std::vector<std::string_view> SearchEngine::Search(std::string_view query, size_t results_count) const {
@@ -51,44 +81,11 @@ std::vector<std::string_view> SearchEngine::Search(std::string_view query, size_
         isnt_alpha = i;
     }
 
-    size_t new_line = 0;
-    std::string_view line;
-    std::vector<std::vector<std::string_view>> cur_text;
-    std::vector<std::string_view> text_by_lines;
-    do {
-        new_line = this->text_.find('\n');
-        if (new_line == std::string::npos) {
-            new_line = this->text_.size();
-        }
-        line = this->text_.substr(0, new_line);
-        text_by_lines.push_back(line);
-        isnt_alpha = 0;
-        std::string_view word;
-        std::vector<std::string_view> cur_line;
-        for (size_t i = 1; i < line.size(); ++i) {
-            while (isalpha(line[i]) && i < line.size()) {
-                ++i;
-            }
-            if (isnt_alpha == 0 && isalpha(line[0])) {
-                word = std::string_view{line.data(), i};
-            } else if (!std::string_view{line.data() + isnt_alpha + 1, i - isnt_alpha - 1}.empty()) {
-                word = std::string_view{line.data() + isnt_alpha + 1, i - isnt_alpha - 1};
-            }
-            isnt_alpha = i;
-            cur_line.push_back(word);
-        }
-        cur_text.push_back(cur_line);
-        if (new_line == this->text_.size()) {
-            break;
-        }
-        this->text_.remove_prefix(new_line + 1);
-    } while (!this->text_.empty());
-
-    std::vector<std::unordered_map<std::string_view, size_t>> occur_cnt(cur_text.size());
-    for (size_t i = 0; i < cur_text.size(); ++i) {
+    std::vector<std::unordered_map<std::string_view, size_t>> occur_cnt(text_by_words_.size());
+    for (size_t i = 0; i < text_by_words_.size(); ++i) {
         for (const auto& j : unique_words) {
-            for (size_t k = 0; k < cur_text[i].size(); ++k) {
-                if (cur_text[i][k] == j) {
+            for (size_t k = 0; k < text_by_words_[i].size(); ++k) {
+                if (text_by_words_[i][k] == j) {
                     ++occur_cnt[i][j];
                 }
             }
@@ -103,15 +100,16 @@ std::vector<std::string_view> SearchEngine::Search(std::string_view query, size_
                 ++occurs;
             }
         }
-        idfs[i] = logl(static_cast<long double>(cur_text.size()) / static_cast<long double>(occurs));
+        idfs[i] = logl(static_cast<long double>(text_by_words_.size()) / static_cast<long double>(occurs));
     }
 
-    std::vector<std::pair<long double, size_t>> relevance(cur_text.size());
+    std::vector<std::pair<long double, size_t>> relevance(text_by_words_.size());
     for (size_t i = 0; i < occur_cnt.size(); ++i) {
         relevance[i] = {0, i};
         for (const auto& j : occur_cnt[i]) {
             relevance[i].first +=
-                (static_cast<long double>(j.second) / static_cast<long double>(cur_text[i].size())) * idfs[j.first];
+                (static_cast<long double>(j.second) / static_cast<long double>(text_by_words_[i].size())) *
+                idfs[j.first];
         }
     }
 
