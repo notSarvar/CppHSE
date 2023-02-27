@@ -42,7 +42,7 @@ void SearchEngine::BuildIndex(std::string_view text) {
             new_line = text.size();
         }
         line = text.substr(0, new_line);
-        text_by_lines.push_back(line);
+        text_by_lines_.push_back(line);
         isnt_alpha = 0;
         std::string_view word;
         std::vector<std::string_view> cur_line;
@@ -121,7 +121,7 @@ std::vector<std::string_view> SearchEngine::Search(std::string_view query, size_
             break;
         }
         if (i.first > EPS) {
-            search_result.push_back(text_by_lines[i.second]);
+            search_result.push_back(text_by_lines_[i.second]);
         }
     }
     return search_result;
