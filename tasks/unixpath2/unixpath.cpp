@@ -1,6 +1,6 @@
 #include "unixpath.h"
 
-UnixPath::UnixPath(std::string_view initial_dir) : initial_dir_(initial_dir) {
+UnixPath::UnixPath(std::string_view initial_dir) : initial_dir_(static_cast<std::string>(initial_dir) + '/') {
     absolute_path_ = initial_dir_;
 }
 
@@ -42,17 +42,14 @@ void UnixPath::ChangeDirectory(std::string_view path) {
             absolute_path_ += "/";
         }
     }
-    if (absolute_path_.size() > 1 && absolute_path_.back() == '/') {
+    if (absolute_path_.ends_with('/')) {
         absolute_path_.pop_back();
     }
 
     size_t i = 0;
     size_t last_common_dir = 0;
-    std::string intermediate_dir;
-    initial_dir_.push_back('/');
     absolute_path_.push_back('/');
     while (initial_dir_[i] == absolute_path_[i] && i < std::min(initial_dir_.size(), absolute_path_.size())) {
-        intermediate_dir += initial_dir_[i];
         if (initial_dir_[i] == '/') {
             last_common_dir = i;
         }
@@ -74,7 +71,6 @@ void UnixPath::ChangeDirectory(std::string_view path) {
     if (relative_path_.size() > 1 && relative_path_.back() == '/') {
         relative_path_.pop_back();
     }
-    initial_dir_.pop_back();
     absolute_path_.pop_back();
 }
 
