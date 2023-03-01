@@ -152,7 +152,7 @@ void Minesweeper::OpenCell(const Cell& cell) {
 
     if (field_[cell.x][cell.y] == '*') {
         game_status_ = GameStatus::DEFEAT;
-        end_time_ = std::time(nullptr) - start_time_;
+        end_time_ = time(nullptr) - start_time_;
         for (size_t i = 0; i < field_.size(); ++i) {
             for (size_t j = 0; j < field_[i].size(); ++j) {
                 cell_status_[i][j].is_opened_ = true;
@@ -184,7 +184,7 @@ void Minesweeper::OpenCell(const Cell& cell) {
     }
     if (!cells_left_) {
         game_status_ = GameStatus::VICTORY;
-        end_time_ = std::time(nullptr) - start_time_;
+        end_time_ = time(nullptr) - start_time_;
     }
 }
 
@@ -194,7 +194,7 @@ void Minesweeper::MarkCell(const Cell& cell) {
     }
     if (game_status_ == GameStatus::NOT_STARTED) {
         game_status_ = GameStatus::IN_PROGRESS;
-        start_time_ = std::time(nullptr);
+        start_time_ = time(nullptr);
     }
     if (cell_status_[cell.x][cell.y].mark == '-') {
         cell_status_[cell.x][cell.y].mark = '?';
@@ -214,7 +214,7 @@ time_t Minesweeper::GetGameTime() const {
     if (!StatusCheck()) {
         return end_time_;
     }
-    return std::time(nullptr) - start_time_;
+    return time(nullptr) - start_time_;
 }
 
 Minesweeper::RenderedField Minesweeper::RenderField() const {
