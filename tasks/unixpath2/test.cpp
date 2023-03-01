@@ -16,7 +16,11 @@ TEST_CASE("UnixPath") {
     REQUIRE("/home" == path.GetAbsolutePath());
     REQUIRE("." == path.GetRelativePath());
 
+    path.ChangeDirectory("/sarvar/lol");
+    REQUIRE("/sarvar/lol" == path.GetAbsolutePath());
+    REQUIRE("../sarvar/lol" == path.GetRelativePath());
+
     path.ChangeDirectory(".././././tmp/dir/..");
-    REQUIRE("/tmp" == path.GetAbsolutePath());
-    REQUIRE("../tmp" == path.GetRelativePath());
+    REQUIRE("/sarvar/tmp" == path.GetAbsolutePath());
+    REQUIRE("../sarvar/tmp" == path.GetRelativePath());
 }
