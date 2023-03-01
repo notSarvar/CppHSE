@@ -36,7 +36,7 @@ bool operator==(const std::string_view& a, const std::string_view& b) {
     return true;
 }
 
-auto ParseQuery(std::string_view query) {
+auto SearchEngine::ParseQuery(std::string_view query) const {
     std::set<std::string_view, decltype(cmp)> unique_words(cmp);
     size_t isnt_alpha = 0;
     for (size_t i = 1; i < query.size(); ++i) {
@@ -53,12 +53,12 @@ auto ParseQuery(std::string_view query) {
     return unique_words;
 }
 
-auto CalcRelevance(const auto& text_by_words, const auto& unique_words) {
-    std::vector<std::unordered_map<std::string_view, size_t>> occur_cnt(text_by_words.size());
-    for (size_t i = 0; i < text_by_words.size(); ++i) {
+auto SearchEngine::CalcRelevance(const auto& unique_words) const {
+    std::vector<std::unordered_map<std::string_view, size_t>> occur_cnt(text_by_words_.size());
+    for (size_t i = 0; i < text_by_words_.size(); ++i) {
         for (const auto& j : unique_words) {
-            for (size_t k = 0; k < text_by_words[i].size(); ++k) {
-                if (text_by_words[i][k] == j) {
+            for (size_t k = 0; k < text_by_words_[i].size(); ++k) {
+                if (text_by_words_[i][k] == j) {
                     ++occur_cnt[i][j];
                 }
             }
@@ -72,15 +72,15 @@ auto CalcRelevance(const auto& text_by_words, const auto& unique_words) {
                 ++occurs;
             }
         }
-        idfs[i] = log(static_cast<double>(text_by_words.size()) / static_cast<double>(occurs));
+        idfs[i] = log(static_cast<double>(text_by_words_.size()) / static_cast<double>(occurs));
     }
 
-    std::vector<std::pair<double, size_t>> relevance(text_by_words.size());
+    std::vector<std::pair<double, size_t>> relevance(text_by_words_.size());
     for (size_t i = 0; i < occur_cnt.size(); ++i) {
         relevance[i] = {0, i};
         for (const auto& j : occur_cnt[i]) {
             relevance[i].first +=
-                (static_cast<double>(j.second) / static_cast<double>(text_by_words[i].size())) * idfs[j.first];
+                (static_cast<double>(j.second) / static_cast<double>(text_by_words_[i].size())) * idfs[j.first];
         }
     }
 
@@ -89,14 +89,14 @@ auto CalcRelevance(const auto& text_by_words, const auto& unique_words) {
     return relevance;
 }
 
-auto FetchTop(const auto& text_by_lines, const auto& relevance, size_t results_count) {
+auto SearchEngine::FetchTop(const auto& relevance, size_t results_count) const {
     std::vector<std::string_view> search_result;
     for (const auto& i : relevance) {
         if (results_count-- == 0) {
             break;
         }
         if (i.first > EPS) {
-            search_result.push_back(text_by_lines[i.second]);
+            search_result.push_back(text_by_lines_[i.second]);
         }
     }
     return search_result;
@@ -138,6 +138,6 @@ void SearchEngine::BuildIndex(std::string_view text) {
 
 std::vector<std::string_view> SearchEngine::Search(std::string_view query, size_t results_count) const {
     auto unique_words = ParseQuery(query);
-    auto relevance = CalcRelevance(text_by_words_, unique_words);
-    return FetchTop(text_by_lines_, relevance, results_count);
+    auto relevance = CalcRelevance(unique_words);
+    return FetchTop(relevance, results_count);
 }
