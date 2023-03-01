@@ -7,7 +7,6 @@
 #include <string>
 #include <unordered_map>
 
-
 const double EPS = 1e-7;
 
 bool ByRelevance(const std::pair<double, std::size_t>& a, const std::pair<double, std::size_t>& b) {
@@ -40,7 +39,7 @@ bool operator==(const std::string_view& a, const std::string_view& b) {
     return true;
 }
 
-std::set<std::string_view, decltype(cmp)> ParseQuery(std::string_view query){
+std::set<std::string_view, decltype(cmp)> ParseQuery(std::string_view query) {
     std::set<std::string_view, decltype(cmp)> unique_words(cmp);
     size_t isnt_alpha = 0;
     for (size_t i = 1; i < query.size(); ++i) {
