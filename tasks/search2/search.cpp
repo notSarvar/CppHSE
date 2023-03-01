@@ -1,8 +1,12 @@
 #include "search.h"
 
+#include <algorithm>
+#include <ctype.h>
 #include <cmath>
 #include <set>
 #include <string>
+#include <unordered_map>
+
 
 const double EPS = 1e-7;
 
@@ -36,7 +40,7 @@ bool operator==(const std::string_view& a, const std::string_view& b) {
     return true;
 }
 
-auto SearchEngine::ParseQuery(std::string_view query) const {
+std::set<std::string_view, decltype(cmp)> ParseQuery(std::string_view query){
     std::set<std::string_view, decltype(cmp)> unique_words(cmp);
     size_t isnt_alpha = 0;
     for (size_t i = 1; i < query.size(); ++i) {
@@ -53,7 +57,7 @@ auto SearchEngine::ParseQuery(std::string_view query) const {
     return unique_words;
 }
 
-auto SearchEngine::CalcRelevance(const auto& unique_words) const {
+std::vector<std::pair<double, size_t>> SearchEngine::CalcRelevance(const auto& unique_words) const {
     std::vector<std::unordered_map<std::string_view, size_t>> occur_cnt(text_by_words_.size());
     for (size_t i = 0; i < text_by_words_.size(); ++i) {
         for (const auto& j : unique_words) {
@@ -89,7 +93,7 @@ auto SearchEngine::CalcRelevance(const auto& unique_words) const {
     return relevance;
 }
 
-auto SearchEngine::FetchTop(const auto& relevance, size_t results_count) const {
+std::vector<std::string_view> SearchEngine::FetchTop(const auto& relevance, size_t results_count) const {
     std::vector<std::string_view> search_result;
     for (const auto& i : relevance) {
         if (results_count-- == 0) {
@@ -139,5 +143,6 @@ void SearchEngine::BuildIndex(std::string_view text) {
 std::vector<std::string_view> SearchEngine::Search(std::string_view query, size_t results_count) const {
     auto unique_words = ParseQuery(query);
     auto relevance = CalcRelevance(unique_words);
+
     return FetchTop(relevance, results_count);
 }
