@@ -80,8 +80,7 @@ auto CalcRelevance(const auto& text_by_words, const auto& unique_words) {
         relevance[i] = {0, i};
         for (const auto& j : occur_cnt[i]) {
             relevance[i].first +=
-                (static_cast<double>(j.second) / static_cast<double>(text_by_words[i].size())) *
-                idfs[j.first];
+                (static_cast<double>(j.second) / static_cast<double>(text_by_words[i].size())) * idfs[j.first];
         }
     }
 
