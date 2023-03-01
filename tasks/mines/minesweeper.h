@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <time.h>
 
 class Minesweeper {
 public:
@@ -42,8 +43,8 @@ private:
 
     RenderedField field_;
     std::vector<std::vector<CellStatus>> cell_status_;
-    std::time_t start_time_;
-    std::time_t end_time_;
+    time_t start_time_;
+    time_t end_time_;
     size_t cells_left_;
     GameStatus game_status_ = GameStatus::NOT_STARTED;
 
