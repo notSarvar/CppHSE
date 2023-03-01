@@ -17,7 +17,7 @@ std::vector<Minesweeper::Cell> Minesweeper::GenerateMines(size_t width, size_t h
         }
     }
 
-    auto rng = std::default_random_engine {};
+    auto rng = std::default_random_engine{};
     std::shuffle(mines.begin(), mines.end(), rng);
 
     mines.resize(mines_count);
