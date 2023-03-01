@@ -38,7 +38,7 @@ private:
     struct CellStatus {
         char mark = '-';
         size_t mines_cnt = 0;
-        bool is_opened_;
+        bool is_opened_ = false;
     };
 
     RenderedField field_;
