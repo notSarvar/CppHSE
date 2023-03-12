@@ -13,12 +13,7 @@ Poly::Poly(std::vector<int64_t> coefs) {
     }
 }
 
-Poly::Poly(std::initializer_list<std::pair<int64_t, int64_t>> coefs) {
-    for (const auto& i : coefs) {
-        if (i.second) {
-            coefs_[i.first] = i.second;
-        }
-    }
+Poly::Poly(std::initializer_list<std::pair<const int64_t, int64_t>> coefs) : coefs_(coefs) {
 }
 
 bool Poly::operator==(const Poly& other) const {

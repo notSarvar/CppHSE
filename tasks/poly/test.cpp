@@ -6,7 +6,7 @@
 
 TEST_CASE("Poly") {
     const Poly poly0;                    // y = 0
-    Poly poly1({1, 0, 3});               // y = 1 + 0x + 3x^2
+    Poly poly1{{1, 0, 3}};               // y = 1 + 0x + 3x^2
     const Poly poly2({{0, 1}, {2, 3}});  // y = 1 + 3x^2
 
     REQUIRE(0 == poly0(1));
