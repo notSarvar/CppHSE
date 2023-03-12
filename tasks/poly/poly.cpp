@@ -20,18 +20,6 @@ bool Poly::operator==(const Poly& other) const {
     return coefs_ == other.coefs_;
 }
 
-int64_t Binpow(int64_t x, int64_t n) {
-    int64_t res = 1;
-    while (n) {
-        if (n & 1) {
-            res *= x;
-        }
-        x *= x;
-        n >>= 1;
-    }
-    return res;
-}
-
 int64_t Poly::operator()(int64_t a) const {
     int64_t sum = 0;
     for (const auto& i : coefs_) {
@@ -52,10 +40,14 @@ Poly& operator+=(Poly& lhs, const Poly& rhs) {
     for (const auto i : rhs.coefs_) {
         lhs.coefs_[i.first] += i.second;
     }
-    for (auto& i : lhs.coefs_) {
+    std::vector<int64_t> deletes;
+    for (const auto& i : lhs.coefs_) {
         if (!i.second) {
-            lhs.coefs_.erase(i.first);
+            deletes.push_back(i.first);
         }
+    }
+    for (auto i : deletes) {
+        lhs.coefs_.erase(i);
     }
     return lhs;
 }
@@ -64,10 +56,14 @@ Poly& operator-=(Poly& lhs, const Poly& rhs) {
     for (const auto i : rhs.coefs_) {
         lhs.coefs_[i.first] -= i.second;
     }
-    for (auto& i : lhs.coefs_) {
+    std::vector<int64_t> deletes;
+    for (const auto& i : lhs.coefs_) {
         if (!i.second) {
-            lhs.coefs_.erase(i.first);
+            deletes.push_back(i.first);
         }
+    }
+    for (auto i : deletes) {
+        lhs.coefs_.erase(i);
     }
     return lhs;
 }
@@ -94,6 +90,15 @@ Poly operator+(const Poly& lhs, const Poly& rhs) {
     Poly new_poly = lhs;
     for (const auto i : rhs.coefs_) {
         new_poly.coefs_[i.first] += i.second;
+    }
+    std::vector<int64_t> deletes;
+    for (const auto& i : new_poly.coefs_) {
+        if (!i.second) {
+            deletes.push_back(i.first);
+        }
+    }
+    for (auto i : deletes) {
+        new_poly.coefs_.erase(i);
     }
     return new_poly;
 }
