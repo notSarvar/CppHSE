@@ -117,6 +117,15 @@ Poly operator*(const Poly& lhs, const Poly& rhs) {
     return new_poly;
 }
 
+Poly operator*=(Poly& lhs, const Poly& rhs) {
+    for (std::map<int64_t, int64_t>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); ++l) {
+        for (std::map<int64_t, int64_t>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); ++r) {
+            lhs.coefs_[l->first + r->first] += l->second * r->second;
+        }
+    }
+    return lhs;
+}
+
 std::ostream& operator<<(std::ostream& stream, const Poly& poly) {
     if (poly.coefs_.empty()) {
         std::string ans = "y = 0";

@@ -20,6 +20,7 @@ public:
     friend std::ostream& operator<<(std::ostream& stream, const Poly& poly);
     friend Poly& operator+=(Poly& lhs, const Poly& rhs);
     friend Poly& operator-=(Poly& lhs, const Poly& rhs);
+    friend Poly operator*=(Poly& lhs, const Poly& rhs);
     friend Poly operator-(const Poly& lhs, const Poly& rhs);
     friend Poly operator+(const Poly& lhs, const Poly& rhs);
     friend Poly operator*(const Poly& lhs, const Poly& rhs);
