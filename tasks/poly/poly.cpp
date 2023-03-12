@@ -40,7 +40,7 @@ int64_t Binpow(int64_t x, int64_t n) {
 int64_t Poly::operator()(int64_t a) const {
     int64_t sum = 0;
     for (const auto& i : coefs_) {
-        sum += i.second * static_cast<int64_t>(pow(a, i.first));
+        sum += i.second * static_cast<int64_t>(pow(static_cast<double>(a), static_cast<double>(i.first)));
     }
     return sum;
 }
