@@ -44,7 +44,7 @@ int64_t Poly::operator()(int64_t a) const {
     return sum;
 }
 
-Poly Poly::operator-() const{
+Poly Poly::operator-() const {
     Poly new_poly = *this;
     for (auto& i : coefs_) {
         new_poly.coefs_[i.first] *= -1;
@@ -53,7 +53,7 @@ Poly Poly::operator-() const{
 }
 
 Poly& operator+=(Poly& lhs, const Poly& rhs) {
-//    std::cout << "im here\n";
+    //    std::cout << "im here\n";
     for (const auto i : rhs.coefs_) {
         lhs.coefs_[i.first] += i.second;
     }
@@ -89,7 +89,7 @@ Poly operator-(const Poly& lhs, const Poly& rhs) {
     std::vector<int64_t> deletes;
     for (const auto& i : new_poly.coefs_) {
         if (!i.second) {
-//            new_poly.coefs_.erase(i.first);
+            //            new_poly.coefs_.erase(i.first);
             deletes.push_back(i.first);
         }
     }
