@@ -17,6 +17,7 @@ public:
     Poly(std::initializer_list<std::pair<int64_t, int64_t>> coefs);
     bool operator==(const Poly& other) const;
     Poly operator-() const;
+    int64_t operator()(int64_t a) const;
     friend std::ostream& operator<<(std::ostream& stream, const Poly& poly);
     friend Poly& operator+=(Poly& lhs, const Poly& rhs);
     friend Poly& operator-=(Poly& lhs, const Poly& rhs);
@@ -24,7 +25,6 @@ public:
     friend Poly operator-(const Poly& lhs, const Poly& rhs);
     friend Poly operator+(const Poly& lhs, const Poly& rhs);
     friend Poly operator*(const Poly& lhs, const Poly& rhs);
-    int64_t operator()(int64_t a) const;
 
 private:
     std::map<int64_t, int64_t, Cmp> coefs_;
