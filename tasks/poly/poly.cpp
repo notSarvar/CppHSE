@@ -81,8 +81,8 @@ Poly operator+(const Poly& lhs, const Poly& rhs) {
 }
 
 Poly operator*=(Poly& lhs, const Poly& rhs) {
-    for (std::map<int64_t, int64_t, Cmp>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); l++) {
-        for (std::map<int64_t, int64_t, Cmp>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); r++) {
+    for (std::map<int64_t, int64_t, Cmp>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); ++l) {
+        for (std::map<int64_t, int64_t, Cmp>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); ++r) {
             lhs.coefs_[l->first + r->first] += l->second * r->second;
         }
     }
@@ -100,8 +100,8 @@ Poly operator*=(Poly& lhs, const Poly& rhs) {
 
 Poly operator*(const Poly& lhs, const Poly& rhs) {
     Poly new_poly;
-    for (std::map<int64_t, int64_t, Cmp>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); l++) {
-        for (std::map<int64_t, int64_t, Cmp>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); r++) {
+    for (std::map<int64_t, int64_t, Cmp>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); ++l) {
+        for (std::map<int64_t, int64_t, Cmp>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); ++r) {
             new_poly.coefs_[l->first + r->first] += l->second * r->second;
         }
     }
