@@ -30,14 +30,14 @@ int64_t Poly::operator()(int64_t a) const {
 
 Poly Poly::operator-() const {
     Poly new_poly = *this;
-    for (auto& i : coefs_) {
-        new_poly.coefs_[i.first] *= -1;
+    for (auto& i : new_poly.coefs_) {
+        i.second *= -1;
     }
     return new_poly;
 }
 
 Poly& operator+=(Poly& lhs, const Poly& rhs) {
-    for (const auto i : rhs.coefs_) {
+    for (const auto& i : rhs.coefs_) {
         lhs.coefs_[i.first] += i.second;
     }
     std::vector<int64_t> deletes;
@@ -53,7 +53,7 @@ Poly& operator+=(Poly& lhs, const Poly& rhs) {
 }
 
 Poly& operator-=(Poly& lhs, const Poly& rhs) {
-    for (const auto i : rhs.coefs_) {
+    for (const auto& i : rhs.coefs_) {
         lhs.coefs_[i.first] -= i.second;
     }
     std::vector<int64_t> deletes;
@@ -81,8 +81,8 @@ Poly operator+(const Poly& lhs, const Poly& rhs) {
 }
 
 Poly operator*=(Poly& lhs, const Poly& rhs) {
-    for (std::map<int64_t, int64_t>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); ++l) {
-        for (std::map<int64_t, int64_t>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); ++r) {
+    for (std::map<int64_t, int64_t, Cmp>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); l++) {
+        for (std::map<int64_t, int64_t, Cmp>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); r++) {
             lhs.coefs_[l->first + r->first] += l->second * r->second;
         }
     }
@@ -100,8 +100,8 @@ Poly operator*=(Poly& lhs, const Poly& rhs) {
 
 Poly operator*(const Poly& lhs, const Poly& rhs) {
     Poly new_poly;
-    for (std::map<int64_t, int64_t>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); ++l) {
-        for (std::map<int64_t, int64_t>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); ++r) {
+    for (std::map<int64_t, int64_t, Cmp>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); l++) {
+        for (std::map<int64_t, int64_t, Cmp>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); r++) {
             new_poly.coefs_[l->first + r->first] += l->second * r->second;
         }
     }
@@ -125,11 +125,11 @@ std::ostream& operator<<(std::ostream& stream, const Poly& poly) {
     }
     std::string ans = "y = ";
     std::string s;
-    size_t f = 1;
-    for (auto i : poly.coefs_) {
+    size_t f = 0;
+    for (const auto& i : poly.coefs_) {
         auto coef = i.second;
         auto deg = i.first;
-        if (!f) {
+        if (f) {
             if (coef < 0) {
                 s = " - ";
                 coef *= -1;
@@ -137,7 +137,7 @@ std::ostream& operator<<(std::ostream& stream, const Poly& poly) {
                 s = " + ";
             }
         }
-        f = 0;
+        f = 1;
         ans += s;
         ans += std::to_string(coef);
         if (!deg) {
