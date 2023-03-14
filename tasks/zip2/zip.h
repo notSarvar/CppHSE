@@ -3,36 +3,31 @@
 #include <iterator>
 #include <vector>
 
-//std::pair<typename std::iterator_traits<Iter1>::value_type, typename std::iterator_traits<Iter2>::value_type>
-
 template <typename T, typename U>
-auto Zip(const T& sequence1, const U& sequence2) {
-    auto it1 = std::begin(sequence1);
-    auto it2 = std::begin(sequence2);
+class Zipped {
+public:
+    Zipped(T f_begin, T f_end, U s_begin, U s_end)
+        : f_begin_(f_begin), f_end_(f_end), s_begin_(s_begin), s_end_(s_end) {
+    }
 
-    template<typename T, typename U>
     class ZipIterator {
     public:
-        using value_type = std::pair<T, U>;
-        using reference = value_type&;
-        using pointer = value_type*;
-        using difference_type = std::ptrdiff_t;
-        using iterator_category = std::input_iterator_tag;
+        using ValueType =
+            std::pair<typename std::iterator_traits<T>::value_type, typename std::iterator_traits<U>::value_type>;
 
-        ZipIterator(const typename std::vector<T>::const_iterator& it1,
-                    const typename std::vector<U>::const_iterator& it2)
-            : it1_(it1), it2_(it2) {}
+        ZipIterator(T it1, U it2) : it1_(it1), it2_(it2) {
+        }
 
         bool operator==(const ZipIterator& other) const {
             return it1_ == other.it1_ || it2_ == other.it2_;
         }
 
         bool operator!=(const ZipIterator& other) const {
-            return *this != other;
+            return it1_ != other.it1_ || it2_ != other.it2_;
         }
 
-        reference operator*() const {
-            return { *it1_, *it2_ };
+        ValueType operator*() const {
+            return {*it1_, *it2_};
         }
 
         ZipIterator& operator++() {
@@ -42,30 +37,31 @@ auto Zip(const T& sequence1, const U& sequence2) {
         }
 
     private:
-        typename std::vector<T>::const_iterator it1_;
-        typename std::vector<U>::const_iterator it2_;
+        T it1_;
+        U it2_;
     };
 
-    template<typename T, typename U>
-    class ZipRange {
-    public:
-        using iterator = ZipIterator<T, U>;
+    ZipIterator begin() const {
+        return ZipIterator(f_begin_, s_begin_);
+    }
 
-        ZipRange(const std::vector<T>& v1, const std::vector<U>& v2)
-            : v1_(v1), v2_(v2) {}
+    ZipIterator end() const {
+        return ZipIterator(f_end_, s_end_);
+    }
 
-        iterator begin() const {
-            return { std::begin(v1_), std::begin(v2_) };
-        }
+private:
+    T f_begin_;
+    T f_end_;
+    U s_begin_;
+    U s_end_;
+};
 
-        iterator end() const {
-            return { std::end(v1_), std::end(v2_) };
-        }
+template <typename Sequence1, typename Sequence2>
+auto Zip(const Sequence1& sequence1, const Sequence2& sequence2) {
+    auto f_end = std::begin(sequence1);
+    auto s_end = std::begin(sequence2);
+    for (; f_end != std::end(sequence1) && s_end != std::end(sequence2); ++f_end, ++s_end) {
+    }
 
-    private:
-        const std::vector<T>& v1_;
-        const std::vector<U>& v2_;
-    };
-     return {sequence1, seqquence2};
-
+    return Zipped(std::begin(sequence1), f_end, std::begin(sequence2), s_end);
 }
