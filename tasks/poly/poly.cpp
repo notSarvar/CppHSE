@@ -81,20 +81,22 @@ Poly operator+(const Poly& lhs, const Poly& rhs) {
 }
 
 Poly& operator*=(Poly& lhs, const Poly& rhs) {
+    Poly new_poly;
     for (std::map<int64_t, int64_t, Cmp>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); ++l) {
         for (std::map<int64_t, int64_t, Cmp>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); ++r) {
-            lhs.coefs_[l->first + r->first] += l->second * r->second;
+            new_poly.coefs_[l->first + r->first] += l->second * r->second;
         }
     }
     std::vector<int64_t> deletes;
-    for (const auto& i : lhs.coefs_) {
+    for (const auto& i : new_poly.coefs_) {
         if (!i.second) {
             deletes.push_back(i.first);
         }
     }
     for (auto i : deletes) {
-        lhs.coefs_.erase(i);
+        new_poly.coefs_.erase(i);
     }
+    lhs = new_poly;
     return lhs;
 }
 
