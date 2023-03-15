@@ -68,18 +68,6 @@ Poly& operator-=(Poly& lhs, const Poly& rhs) {
     return lhs;
 }
 
-Poly operator-(const Poly& lhs, const Poly& rhs) {
-    Poly new_poly = lhs;
-    new_poly -= rhs;
-    return new_poly;
-}
-
-Poly operator+(const Poly& lhs, const Poly& rhs) {
-    Poly new_poly = lhs;
-    new_poly += rhs;
-    return new_poly;
-}
-
 Poly& operator*=(Poly& lhs, const Poly& rhs) {
     Poly new_poly;
     for (std::map<int64_t, int64_t, Cmp>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); ++l) {
@@ -100,22 +88,21 @@ Poly& operator*=(Poly& lhs, const Poly& rhs) {
     return lhs;
 }
 
+Poly operator-(const Poly& lhs, const Poly& rhs) {
+    Poly new_poly = lhs;
+    new_poly -= rhs;
+    return new_poly;
+}
+
+Poly operator+(const Poly& lhs, const Poly& rhs) {
+    Poly new_poly = lhs;
+    new_poly += rhs;
+    return new_poly;
+}
+
 Poly operator*(const Poly& lhs, const Poly& rhs) {
-    Poly new_poly;
-    for (std::map<int64_t, int64_t, Cmp>::const_iterator l = lhs.coefs_.begin(); l != lhs.coefs_.end(); ++l) {
-        for (std::map<int64_t, int64_t, Cmp>::const_iterator r = rhs.coefs_.begin(); r != rhs.coefs_.end(); ++r) {
-            new_poly.coefs_[l->first + r->first] += l->second * r->second;
-        }
-    }
-    std::vector<int64_t> deletes;
-    for (const auto& i : new_poly.coefs_) {
-        if (!i.second) {
-            deletes.push_back(i.first);
-        }
-    }
-    for (auto i : deletes) {
-        new_poly.coefs_.erase(i);
-    }
+    Poly new_poly = lhs;
+    new_poly *= rhs;
     return new_poly;
 }
 
