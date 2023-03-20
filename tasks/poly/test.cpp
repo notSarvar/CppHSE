@@ -6,7 +6,7 @@
 
 TEST_CASE("Poly") {
     const Poly poly0;                    // y = 0
-    Poly poly1({1, 0, 3});               // y = 1 + 0x + 3x^2
+    Poly poly1{{1, 0, 3}};               // y = 1 + 0x + 3x^2
     const Poly poly2({{0, 1}, {2, 3}});  // y = 1 + 3x^2
 
     REQUIRE(0 == poly0(1));
@@ -39,10 +39,9 @@ TEST_CASE("Poly") {
     poly3 = poly1;
     REQUIRE(poly1 == poly3);
 
-    Poly poly4{{2, 1}};       // y = x^2
+    Poly poly4{{2, 1}};  // y = x^2
     std::stringstream string_stream2;
     std::ostream& stream2 = string_stream2;
     stream2 << poly4;
     REQUIRE("y = 1x^2" == string_stream2.str());
-
 }
