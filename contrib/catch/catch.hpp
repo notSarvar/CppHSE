@@ -16773,7 +16773,7 @@ void ConsoleReporter::printSummaryDivider() {
 void ConsoleReporter::printTestFilters() {
     if (m_config->testSpec().hasFilters()) {
         Colour guard(Colour::BrightYellow);
-        stream << "Filters: " << serializeFilters(m_config->getTestsOrTags()) << '\n';
+        stream << "filters: " << serializeFilters(m_config->getTestsOrTags()) << '\n';
     }
 }
 
