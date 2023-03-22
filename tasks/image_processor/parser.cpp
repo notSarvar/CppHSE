@@ -17,7 +17,7 @@ bool Parser::Parse(int argc, char** argv) {
             if (!filter_description.name.empty()) {
                 filters_to_apply.push_back(filter_description);
             }
-            std::string_view filter = std::string_view(argv[i]).substr(1, std::strlen(argv[i]));
+            std::string_view filter = std::string_view(argv[i]).substr(1, strlen(argv[i]));
             filter_description.name = filter;
             filter_description.params = {};
         } else {
