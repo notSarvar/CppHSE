@@ -1,8 +1,10 @@
 #include "edge_detection_filter.h"
 #include "grayscale_filter.h"
 
+#include <cmath>
+
 EdgeDetectionFilter::EdgeDetectionFilter(double threshold)
-    : threshold_(static_cast<uint8_t>(threshold * Image::RgbMaxD)) {
+    : threshold_(static_cast<uint8_t>(std::lround(threshold * Image::RgbMaxI))) {
 }
 
 void EdgeDetectionFilter::Apply(Image& image) {
@@ -13,13 +15,9 @@ void EdgeDetectionFilter::Apply(Image& image) {
         for (int32_t y = 0; y < image.bmp_info_header.width; ++y) {
             Pixel new_pixel = image.GetPixel(x, y);
             if (new_pixel.r <= threshold_) {
-                new_pixel.r = 0;
-                new_pixel.g = 0;
-                new_pixel.b = 0;
+                new_pixel.r = new_pixel.g = new_pixel.b = 0;
             } else {
-                new_pixel.r = Image::RgbMaxI;
-                new_pixel.g = Image::RgbMaxI;
-                new_pixel.b = Image::RgbMaxI;
+                new_pixel.r = new_pixel.g = new_pixel.b = Image::RgbMaxI;
             }
             image.ChangePixel(x, y, new_pixel);
         }
