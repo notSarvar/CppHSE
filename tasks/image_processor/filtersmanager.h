@@ -16,7 +16,7 @@ BaseFilter* MakeEdgeDetectionFilter(const FilterDescription& d);
 BaseFilter* MakeGaussianBlurFilter(const FilterDescription& d);
 BaseFilter* MakeEmbossFilter(const FilterDescription& d);
 
-class FilterApplicator{
+class FilterApplicator {
 public:
     FilterGenerator ApplyFilter(std::string_view name);
 

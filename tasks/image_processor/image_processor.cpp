@@ -3,7 +3,6 @@
 #include "helper.h"
 #include "filtersmanager.h"
 
-
 int main(int argc, char** argv) {
     Parser input;
     if (!input.Parse(argc, argv)) {
@@ -14,7 +13,7 @@ int main(int argc, char** argv) {
     Image cur_image(input.GetInputFileName());
 
     auto filter_applicator = FilterApplicator();
-    
+
     for (const FilterDescription& description : input.filters_to_apply) {
         auto filter_generator = filter_applicator.ApplyFilter(description.name);
         if (filter_generator == nullptr) {
