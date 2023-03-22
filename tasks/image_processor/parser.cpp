@@ -1,6 +1,7 @@
 #include "parser.h"
 
 #include <string>
+#include <string.h>
 
 bool Parser::Parse(int argc, char** argv) {
     if (argc <= MIN_PARAM_NUM) {
