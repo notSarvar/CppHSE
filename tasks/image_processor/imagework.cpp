@@ -47,13 +47,13 @@ Image::Image(const std::string &path) {
     pixels.resize(bmp_info_header.width * bmp_info_header.height * 3);
 
     if (bmp_info_header.width % 4 == 0) {
-        input_file.read(reinterpret_cast<char *>(pixels.data()), pixels.size());
+        input_file.read(reinterpret_cast<char *>(pixels.data()), static_cast<std::streamsize>(pixels.size()));
     } else {
         size_t padding = bmp_info_header.width % 4;
         for (int32_t i = 0; i < bmp_info_header.height; ++i) {
             input_file.read(reinterpret_cast<char *>(pixels.data() + i * 3 * bmp_info_header.width),
-                        bmp_info_header.width * 3);
-            input_file.seekg(padding, std::ios::cur);
+                            bmp_info_header.width * 3);
+            input_file.seekg(static_cast<int64_t>(padding), std::ios::cur);
         }
     }
 
@@ -90,14 +90,14 @@ void Image::WriteBMP(const std::string &path) {
     out_file.write(reinterpret_cast<char *>(&bmp_info_header), sizeof(BMPHeaderInfo));
 
     if (bmp_info_header.width % 4 == 0) {
-        out_file.write(reinterpret_cast<char *>(pixels.data()), pixels.size());
+        out_file.write(reinterpret_cast<char *>(pixels.data()), static_cast<std::streamsize>(pixels.size()));
     } else {
         size_t padding = bmp_info_header.width % 4;
         char padding_rubbish[] = {0, 0, 0};
         for (int32_t i = 0; i < bmp_info_header.height; ++i) {
             out_file.write(reinterpret_cast<char *>(pixels.data() + i * 3 * bmp_info_header.width),
-                         bmp_info_header.width * 3);
-            out_file.write(padding_rubbish, padding);
+                           bmp_info_header.width * 3);
+            out_file.write(padding_rubbish, static_cast<std::streamsize>(padding));
         }
     }
 
