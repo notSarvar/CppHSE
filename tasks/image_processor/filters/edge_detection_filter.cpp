@@ -9,8 +9,8 @@ EdgeDetectionFilter::EdgeDetectionFilter(double threshold)
 
 void EdgeDetectionFilter::Apply(Image& image) {
     GrayscaleFilter grayscale_filter;
-    ApplyMatrix(filter_matrix_, image);
     grayscale_filter.Apply(image);
+    ApplyMatrix(filter_matrix_, image);
     for (int32_t x = 0; x < image.bmp_info_header.height; ++x) {
         for (int32_t y = 0; y < image.bmp_info_header.width; ++y) {
             Pixel new_pixel = image.GetPixel(x, y);
@@ -20,6 +20,11 @@ void EdgeDetectionFilter::Apply(Image& image) {
                 new_pixel.r = new_pixel.g = new_pixel.b = Image::RgbMaxI;
             }
             image.ChangePixel(x, y, new_pixel);
+
         }
     }
+
+
+
+
 }
