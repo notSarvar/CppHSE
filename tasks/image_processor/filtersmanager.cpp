@@ -12,6 +12,7 @@
 #include <string_view>
 #include <stdexcept>
 
+#include <iostream>
 BaseFilter* MakeNegativeFilter(const FilterDescription& d) {
     if (d.name != "neg") {
         throw std::invalid_argument("wrong filter name");
@@ -27,8 +28,8 @@ BaseFilter* MakeCropFilter(const FilterDescription& d) {
         if (d.params.size() != 2) {
             throw std::exception();
         }
-        int32_t new_width = std::stoi(std::string(d.params.at(0)));
-        int32_t new_height = std::stoi(std::string(d.params.at(1)));
+        int32_t new_width = std::stoi(d.params.at(0));
+        int32_t new_height = std::stoi(d.params.at(1));
         if (new_height <= 0 || new_width <= 0) {
             throw std::exception();
         }
@@ -57,7 +58,7 @@ BaseFilter* MakeEdgeDetectionFilter(const FilterDescription& d) {
         throw std::invalid_argument("wrong filter name");
     }
     try {
-        std::string str_threshold(d.params.at(0));
+        std::string str_threshold = d.params.at(0);
         double threshold = std::stod(str_threshold.c_str());
         if (threshold < 0 || 1 < threshold) {
             throw std::exception();
@@ -73,10 +74,10 @@ BaseFilter* MakeGaussianBlurFilter(const FilterDescription& d) {
         throw std::invalid_argument("wrong filter name");
     }
     try {
-        std::string str_sigma(d.params.at(0));
-        double sigma = std::stod(str_sigma.c_str());
+        double sigma = std::stod(d.params.at(0));
         return new GaussianBlurFilter(sigma);
     } catch (std::exception&) {
+        std::cout << d.params.at(0) << std::endl;
         throw std::invalid_argument("wrong blur params");
     }
 }

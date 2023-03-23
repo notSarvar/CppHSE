@@ -2,6 +2,7 @@
 
 #include <string>
 #include <string.h>
+#include <cmath>
 
 bool Parser::Parse(int argc, char** argv) {
     if (argc <= MIN_PARAM_NUM) {
@@ -26,6 +27,16 @@ bool Parser::Parse(int argc, char** argv) {
         }
     }
     if (!filter_description.name.empty()) {
+        if (filter_description.name == "blur" && !filters_to_apply.empty() && filters_to_apply.back().name == "blur") {
+            double sigma = std::stod(filters_to_apply.back().params.at(0));
+            double new_sigma = std::stod(filter_description.params.at(0));
+            filters_to_apply.pop_back();
+            FilterDescription new_blur;
+            new_blur.name = "blur";
+            std::string new_param = std::to_string(sqrt(sigma * sigma + new_sigma * new_sigma));
+            new_blur.params.push_back(new_param);
+            filter_description = new_blur;
+        }
         filters_to_apply.push_back(filter_description);
     }
     return true;

@@ -7,7 +7,7 @@
 
 struct FilterDescription {
     std::string_view name;
-    std::vector<std::string_view> params;
+    std::vector<std::string> params;
 };
 
 class Parser {
