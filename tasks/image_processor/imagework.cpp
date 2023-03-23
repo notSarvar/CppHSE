@@ -2,7 +2,6 @@
 
 #include <bit>
 #include <fstream>
-#include <iostream>
 #include <string_view>
 
 Image::Image(const std::string &path) {
