@@ -20,11 +20,6 @@ void EdgeDetectionFilter::Apply(Image& image) {
                 new_pixel.r = new_pixel.g = new_pixel.b = Image::RgbMaxI;
             }
             image.ChangePixel(x, y, new_pixel);
-
         }
     }
-
-
-
-
 }
