@@ -92,6 +92,5 @@ FilterGenerator FilterApplicator::ApplyFilter(std::string_view name) {
     if (filters_list_.find(name) != filters_list_.end()) {
         return filters_list_[name];
     }
-    WrongFilter(name);
     return nullptr;
 }
