@@ -1,13 +1,12 @@
 #include "gaussian_blur_filter.h"
 
 #include <cmath>
-#include <iostream>
 
 GaussianBlurFilter::GaussianBlurFilter(double sigma) : sigma_(sigma) {
 }
 
 void GaussianBlurFilter::Apply(Image& image) {
-    int dim = std::ceil(static_cast<int>(sigma_ * 3 * 2));
+    int dim = std::ceil(static_cast<int>(sigma_ * 3));
 
     double sum = 0;
     MatrixD gauss;
