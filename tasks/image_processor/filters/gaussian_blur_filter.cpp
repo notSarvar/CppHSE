@@ -1,36 +1,47 @@
 #include "gaussian_blur_filter.h"
 
 #include <cmath>
+#include <iostream>
 
 GaussianBlurFilter::GaussianBlurFilter(double sigma) : sigma_(sigma) {
 }
 
 void GaussianBlurFilter::Apply(Image& image) {
-    int dim = static_cast<int>(sigma_) * 3;
-    MatrixD gauss_matrix(dim * 2 + 1);
-    for (auto& vec : gauss_matrix) {
-        vec.resize(dim * 2 + 1, 0);
-    }
+    int dim = std::ceil(static_cast<int>(sigma_ * 3 * 2));
 
     double sum = 0;
+    MatrixD gauss;
+    gauss.resize(1);
+    gauss[0].resize(2 * dim + 1);
     for (int x = -dim; x <= dim; ++x) {
-        for (int y = -dim; y <= dim; ++y) {
-            double exp_num = -(x * x + y * y);
-            double exp_denum = (2 * sigma_ * sigma_);
-
-            double e_exp = pow(M_E, exp_num / exp_denum);
-            double val = (e_exp / (2 * M_PI * sigma_ * sigma_));
-
-            gauss_matrix[x + dim][y + dim] = val;
-            sum += val;
-        }
+        double exp_pow = -(x * x) / (2 * sigma_ * sigma_);
+        double exp = pow(M_E, exp_pow);
+        double exp_denum = sqrt(2 * M_PI * sigma_ * sigma_);
+        gauss[0][x + dim] = exp / exp_denum;
+        sum += exp / exp_denum;
     }
 
     for (int x = 0; x <= dim * 2; ++x) {
-        for (int y = 0; y <= dim * 2; ++y) {
-            gauss_matrix[x][y] /= sum;
-        }
+        gauss[0][x] /= sum;
     }
 
-    ApplyMatrix(gauss_matrix, image);
+    ApplyMatrix(gauss, image);
+
+    sum = 0;
+    gauss.resize(2 * dim + 1);
+    for (int i = 0; i < 2 * dim + 1; ++i) {
+        gauss[i].resize(1);
+    }
+    for (int x = -dim; x <= dim; ++x) {
+        double exp_pow = -(x * x) / (2 * sigma_ * sigma_);
+        double exp = pow(M_E, exp_pow);
+        double exp_denum = sqrt(2 * M_PI * sigma_ * sigma_);
+        gauss[x + dim][0] = exp / exp_denum;
+        sum += exp / exp_denum;
+    }
+
+    for (int x = 0; x <= dim * 2; ++x) {
+        gauss[x][0] /= sum;
+    }
+    ApplyMatrix(gauss, image);
 }

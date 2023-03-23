@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../imagework.h"
-
 #include <vector>
 
 using MatrixI = std::vector<std::vector<int8_t>>;
@@ -10,7 +9,6 @@ using MatrixD = std::vector<std::vector<double>>;
 template <typename T>
 void ApplyMatrix(const T& matrix, Image& image) {
     Image new_image = image;
-
     for (int32_t x = 0; x < image.bmp_info_header.height; ++x) {
         for (int32_t y = 0; y < image.bmp_info_header.width; ++y) {
             double sum_r = 0;
@@ -19,7 +17,7 @@ void ApplyMatrix(const T& matrix, Image& image) {
 
             for (int i = -(static_cast<int32_t>(matrix.size() / 2)); i <= (static_cast<int32_t>(matrix.size() / 2));
                  ++i) {
-                for (int j = -(static_cast<int32_t>(matrix.size() / 2)); j <= (static_cast<int32_t>(matrix.size() / 2));
+                for (int j = -(static_cast<int32_t>(matrix[0].size() / 2)); j <= (static_cast<int32_t>(matrix[0].size() / 2));
                      ++j) {
                     int32_t shifted_x = x + i;
                     int32_t shifted_y = y + j;
@@ -41,7 +39,7 @@ void ApplyMatrix(const T& matrix, Image& image) {
                     }
 
                     Pixel pixel = image.GetPixel(shifted_x, shifted_y);
-                    auto coeff = matrix[matrix.size() / 2 + i][matrix.size() / 2 + j];
+                    auto coeff = matrix[matrix.size() / 2 + i][matrix[0].size() / 2 + j];
 
                     sum_r += static_cast<double>(pixel.r) * coeff;
                     sum_g += static_cast<double>(pixel.g) * coeff;
@@ -51,6 +49,7 @@ void ApplyMatrix(const T& matrix, Image& image) {
             sum_r = std::min(image.RgbMaxD, std::max(0.0, sum_r));
             sum_g = std::min(image.RgbMaxD, std::max(0.0, sum_g));
             sum_b = std::min(image.RgbMaxD, std::max(0.0, sum_b));
+
             new_image.ChangePixel(
                 x, y, {static_cast<uint8_t>(sum_r), static_cast<uint8_t>(sum_g), static_cast<uint8_t>(sum_b)});
         }
