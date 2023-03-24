@@ -8,11 +8,11 @@
 #include "filters/sharpening_filter.h"
 #include "filters/gaussian_blur_filter.h"
 #include "filters/emboss_filter.h"
+#include "filters/crystallize.h"
 
 #include <string_view>
 #include <stdexcept>
 
-#include <iostream>
 BaseFilter* MakeNegativeFilter(const FilterDescription& d) {
     if (d.name != "neg") {
         throw std::invalid_argument("wrong filter name");
@@ -77,7 +77,6 @@ BaseFilter* MakeGaussianBlurFilter(const FilterDescription& d) {
         double sigma = std::stod(d.params.at(0));
         return new GaussianBlurFilter(sigma);
     } catch (std::exception&) {
-        std::cout << d.params.at(0) << std::endl;
         throw std::invalid_argument("wrong blur params");
     }
 }
@@ -87,6 +86,22 @@ BaseFilter* MakeEmbossFilter(const FilterDescription& d) {
         throw std::invalid_argument("wrong filter name");
     }
     return new EmbossFilter();
+}
+
+BaseFilter* MakeCrystallizeFilter(const FilterDescription& d) {
+    if (d.name != "crystal") {
+        throw std::invalid_argument("wrong filter name");
+    }
+    try {
+        std::string str_block_size = d.params.at(0);
+        int block_size = std::stoi(str_block_size.c_str());
+        if (block_size < 1) {
+            throw std::exception();
+        }
+        return new CrystallizeFilter(block_size);
+    } catch (std::exception&) {
+        throw std::invalid_argument("wrong crystal params");
+    }
 }
 
 FilterGenerator FilterApplicator::ApplyFilter(std::string_view name) {

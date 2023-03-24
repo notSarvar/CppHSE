@@ -15,4 +15,4 @@ add_executable(
         parser.cpp
         helper.h
         helper.cpp
-        filtersmanager.cpp filters/emboss_filter.h filters/emboss_filter.cpp)
+        filtersmanager.cpp filters/emboss_filter.h filters/emboss_filter.cpp filters/crystallize.h filters/crystallize.cpp)

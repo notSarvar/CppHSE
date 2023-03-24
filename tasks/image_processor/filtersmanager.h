@@ -15,6 +15,7 @@ BaseFilter* MakeSharpeningFilter(const FilterDescription& d);
 BaseFilter* MakeEdgeDetectionFilter(const FilterDescription& d);
 BaseFilter* MakeGaussianBlurFilter(const FilterDescription& d);
 BaseFilter* MakeEmbossFilter(const FilterDescription& d);
+BaseFilter* MakeCrystallizeFilter(const FilterDescription& d);
 
 class FilterApplicator {
 public:
@@ -24,7 +25,8 @@ private:
     std::map<std::string_view, FilterGenerator> filters_list_ = {
         {"neg", MakeNegativeFilter},     {"gs", MakeGrayscaleFilter},       {"crop", MakeCropFilter},
         {"sharp", MakeSharpeningFilter}, {"edge", MakeEdgeDetectionFilter}, {"blur", MakeGaussianBlurFilter},
-        {"emboss", MakeEmbossFilter}};
+        {"emboss", MakeEmbossFilter}, {"crystal",
+        MakeCrystallizeFilter}};
 };
 
 #endif
