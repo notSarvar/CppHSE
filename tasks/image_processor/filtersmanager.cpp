@@ -1,5 +1,4 @@
 #include "filtersmanager.h"
-#include "helper.h"
 
 #include "filters/crop_filter.h"
 #include "filters/grayscale_filter.h"

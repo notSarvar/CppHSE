@@ -12,6 +12,7 @@ const std::string SYNTAX_INFO =
     "Sharpening (-sharp)\n"
     "Edge Detection (-edge threshold) (0 < threshold < 1)\n"
     "Gaussian Blur (-blur sigma)\n"
+    "CrystallizeFilter (-crystal block size)\n"
     "Emboss Filter(-emboss)";  // An emboss filter gives a 3D shadow effect to the image, the result is very useful for
                                // a bumpmap
 

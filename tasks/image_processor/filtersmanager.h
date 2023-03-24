@@ -25,8 +25,7 @@ private:
     std::map<std::string_view, FilterGenerator> filters_list_ = {
         {"neg", MakeNegativeFilter},     {"gs", MakeGrayscaleFilter},       {"crop", MakeCropFilter},
         {"sharp", MakeSharpeningFilter}, {"edge", MakeEdgeDetectionFilter}, {"blur", MakeGaussianBlurFilter},
-        {"emboss", MakeEmbossFilter}, {"crystal",
-        MakeCrystallizeFilter}};
+        {"emboss", MakeEmbossFilter},    {"crystal", MakeCrystallizeFilter}};
 };
 
 #endif

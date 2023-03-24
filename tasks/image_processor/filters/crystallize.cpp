@@ -24,7 +24,8 @@ void CrystallizeFilter::Apply(Image &image) {
             b /= pixel_count;
             for (int32_t i = x; i < x + block_size_ && i < image.bmp_info_header.height; ++i) {
                 for (int32_t j = y; j < y + block_size_ && j < image.bmp_info_header.width; ++j) {
-                    image.ChangePixel(i, j, {static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b)});
+                    image.ChangePixel(i, j,
+                                      {static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b)});
                 }
             }
         }
