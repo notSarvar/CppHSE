@@ -9,7 +9,7 @@ public:
     void Apply(Image &image) override;
 
 private:
-    int block_size_ = 0;
+    int32_t block_size_ = 0;
 };
 
 #endif  // CPP_HSE_TASKS_IMAGE_PROCESSOR_FILTERS_CRYSTALLIZE_H_

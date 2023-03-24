@@ -58,8 +58,7 @@ BaseFilter* MakeEdgeDetectionFilter(const FilterDescription& d) {
         throw std::invalid_argument("wrong filter name");
     }
     try {
-        std::string str_threshold = d.params.at(0);
-        double threshold = std::stod(str_threshold.c_str());
+        double threshold = std::stod(d.params.at(0).c_str());
         if (threshold < 0 || 1 < threshold) {
             throw std::exception();
         }
@@ -93,8 +92,7 @@ BaseFilter* MakeCrystallizeFilter(const FilterDescription& d) {
         throw std::invalid_argument("wrong filter name");
     }
     try {
-        std::string str_block_size = d.params.at(0);
-        int block_size = std::stoi(str_block_size.c_str());
+        int block_size = std::stoi(d.params.at(0).c_str());
         if (block_size < 1) {
             throw std::exception();
         }
