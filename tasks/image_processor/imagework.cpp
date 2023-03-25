@@ -2,10 +2,9 @@
 
 #include <bit>
 #include <fstream>
-#include <string_view>
 
 Image::Image(const std::string_view &path) {
-    std::ifstream input_file(path, std::ios_base::binary);
+    std::ifstream input_file(std::string(path), std::ios_base::binary);
 
     if (!input_file.is_open()) {
         throw std::invalid_argument("Unreadable file");
@@ -61,7 +60,7 @@ Image::Image(const std::string_view &path) {
 }
 
 void Image::WriteBMP(const std::string_view &path) {
-    std::ofstream out_file(path, std::ios_base::binary);
+    std::ofstream out_file(std::string(path), std::ios_base::binary);
 
     if (!out_file.is_open()) {
         throw std::invalid_argument("Unable to write file");
