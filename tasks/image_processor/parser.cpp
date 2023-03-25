@@ -42,10 +42,10 @@ bool Parser::Parse(int argc, char** argv) {
     return true;
 }
 
-std::string Parser::GetInputFileName() const {
-    return std::string{input_file_name_};
+std::string_view Parser::GetInputFileName() const {
+    return input_file_name_;
 }
 
-std::string Parser::GetOutputFileName() const {
-    return std::string{output_file_name_};
+std::string_view Parser::GetOutputFileName() const {
+    return output_file_name_;
 }

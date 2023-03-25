@@ -12,16 +12,15 @@ int main(int argc, char** argv) {
 
     Image cur_image(input.GetInputFileName());
 
-    auto filter_applicator = FilterApplicator();
+    FilterApplicator filter_to_get;
 
     for (const FilterDescription& description : input.filters_to_apply) {
-        auto filter_generator = filter_applicator.ApplyFilter(description.name);
-        if (filter_generator == nullptr) {
+        auto filter_to_apply = filter_to_get.GetFilter(description.name);
+        if (filter_to_apply == nullptr) {
             WrongFilter(description.name);
-            return 1;
         }
 
-        BaseFilter* filter = filter_generator(description);
+        BaseFilter* filter = filter_to_apply(description);
 
         filter->Apply(cur_image);
         delete filter;

@@ -15,9 +15,9 @@ void ApplyMatrix(const T& matrix, Image& image) {
             double sum_g = 0;
             double sum_b = 0;
 
-            for (int i = -(static_cast<int32_t>(matrix.size() / 2)); i <= (static_cast<int32_t>(matrix.size() / 2));
+            for (int32_t i = -(static_cast<int32_t>(matrix.size() / 2)); i <= (static_cast<int32_t>(matrix.size() / 2));
                  ++i) {
-                for (int j = -(static_cast<int32_t>(matrix[0].size() / 2));
+                for (int32_t j = -(static_cast<int32_t>(matrix[0].size() / 2));
                      j <= (static_cast<int32_t>(matrix[0].size() / 2)); ++j) {
                     int32_t shifted_x = x + i;
                     int32_t shifted_y = y + j;

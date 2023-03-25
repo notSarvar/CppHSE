@@ -53,9 +53,9 @@ struct BMPHeaderInfo {
 
 class Image {
 public:
-    explicit Image(const std::string &path);
+    explicit Image(const std::string_view &path);
 
-    void WriteBMP(const std::string &path);
+    void WriteBMP(const std::string_view &path);
     void Resize(int32_t width, int32_t height);
     Pixel GetPixel(int32_t x, int32_t y);
     void ChangePixel(int32_t x, int32_t y, Pixel new_pixel);

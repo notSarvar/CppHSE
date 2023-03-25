@@ -13,8 +13,8 @@ struct FilterDescription {
 class Parser {
 public:
     bool Parse(int argc, char* argv[]);
-    std::string GetInputFileName() const;
-    std::string GetOutputFileName() const;
+    std::string_view GetInputFileName() const;
+    std::string_view GetOutputFileName() const;
 
     std::vector<FilterDescription> filters_to_apply;
 

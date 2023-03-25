@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string_view>
 
-Image::Image(const std::string &path) {
+Image::Image(const std::string_view &path) {
     std::ifstream input_file(path, std::ios_base::binary);
 
     if (!input_file.is_open()) {
@@ -60,7 +60,7 @@ Image::Image(const std::string &path) {
     bmp_file_header.offset_data = sizeof(bmp_file_header) + sizeof(bmp_info_header);
 }
 
-void Image::WriteBMP(const std::string &path) {
+void Image::WriteBMP(const std::string_view &path) {
     std::ofstream out_file(path, std::ios_base::binary);
 
     if (!out_file.is_open()) {

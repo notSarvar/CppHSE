@@ -1,9 +1,8 @@
-#ifndef CPP_HSE_TASKS_IMAGE_PROCESSOR_FILTERSMANAGER_H_
-#define CPP_HSE_TASKS_IMAGE_PROCESSOR_FILTERSMANAGER_H_
+#pragma once
 #include "filters/base_filter.h"
 #include "parser.h"
 
-#include <map>
+#include <unordered_map>
 #include <string_view>
 
 using FilterGenerator = BaseFilter* (*)(const FilterDescription&);
@@ -19,13 +18,11 @@ BaseFilter* MakeCrystallizeFilter(const FilterDescription& d);
 
 class FilterApplicator {
 public:
-    FilterGenerator ApplyFilter(std::string_view name);
+    const FilterGenerator GetFilter(std::string_view name);
 
 private:
-    std::map<std::string_view, FilterGenerator> filters_list_ = {
+    std::unordered_map<std::string_view, FilterGenerator> filters_list_ = {
         {"neg", MakeNegativeFilter},     {"gs", MakeGrayscaleFilter},       {"crop", MakeCropFilter},
         {"sharp", MakeSharpeningFilter}, {"edge", MakeEdgeDetectionFilter}, {"blur", MakeGaussianBlurFilter},
         {"emboss", MakeEmbossFilter},    {"crystal", MakeCrystallizeFilter}};
 };
-
-#endif
