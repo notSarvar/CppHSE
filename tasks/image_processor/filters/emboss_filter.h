@@ -1,5 +1,5 @@
-#ifndef CPP_HSE_TASKS_IMAGE_PROCESSOR_FILTERS_EMBOSS_FILTER_H_
-#define CPP_HSE_TASKS_IMAGE_PROCESSOR_FILTERS_EMBOSS_FILTER_H_
+#pragma once
+
 #include "base_filter.h"
 #include "image_matrix.h"
 
@@ -10,5 +10,3 @@ public:
 private:
     const MatrixD filter_matrix_ = {{-2, -1, 0}, {-1, 1, 1}, {0, 1, 2}};
 };
-
-#endif  // CPP_HSE_TASKS_IMAGE_PROCESSOR_FILTERS_EMBOSS_FILTER_H_

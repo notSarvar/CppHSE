@@ -1,5 +1,4 @@
-#ifndef CPP_HSE_TASKS_IMAGE_PROCESSOR_FILTERS_CRYSTALLIZE_H_
-#define CPP_HSE_TASKS_IMAGE_PROCESSOR_FILTERS_CRYSTALLIZE_H_
+#pragma once
 
 #include "base_filter.h"
 
@@ -11,5 +10,3 @@ public:
 private:
     int32_t block_size_ = 0;
 };
-
-#endif  // CPP_HSE_TASKS_IMAGE_PROCESSOR_FILTERS_CRYSTALLIZE_H_

@@ -7,7 +7,6 @@ add_catch(image_processor.cpp
         imagework.h
         imagework.cpp
         helper.h
-        helper.cpp
         filters/base_filter.h
         filters/crop_filter.cpp
         filters/sharpening_filter.h
@@ -23,8 +22,8 @@ add_catch(image_processor.cpp
         )
 
 add_executable(
-    image_processor
-    image_processor.cpp
+        image_processor
+        image_processor.cpp
         filtersmanager.h
         filtersmanager.cpp
         parser.h
@@ -32,7 +31,6 @@ add_executable(
         imagework.h
         imagework.cpp
         helper.h
-        helper.cpp
         filters/base_filter.h
         filters/crop_filter.cpp
         filters/sharpening_filter.h

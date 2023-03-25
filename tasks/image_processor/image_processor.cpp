@@ -6,8 +6,7 @@
 int main(int argc, char** argv) {
     Parser input;
     if (!input.Parse(argc, argv)) {
-        Helper();
-        return 1;
+        WrongInputParams();
     }
 
     Image cur_image(input.GetInputFileName());
