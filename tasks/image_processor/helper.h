@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string_view>
-#include "string"
+#include <string>
+#include <stdexcept>
 
 const std::string SYNTAX_INFO =
     "Program syntax: {program_name} {input_file} {output_file} -{filter1} [params_for_filter1] [-{filter2} ...] ...\n"
